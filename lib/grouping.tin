@@ -1,0 +1,22 @@
+#nop -- group activity stuff
+
+#class {grouping} {kill}
+#class {grouping} {open}
+
+#act {^%s%1 - [%s%d%.H %s%d%.M %s%d%.V]%*} {
+
+  #if { %3 < 33 } {
+    #echo {<fab>%2%1 - [ %3%4%%H %6%7%%M %9%10%%V] %11};
+    #line {gag};
+  };
+  #elseif { %3 < 66 } {
+      #echo {<fca>%2%1 - [ %3%4%%H %6%7%%M %9%10%%V] %11};
+      #line {gag};
+  };
+
+};
+
+#class {grouping} {close}
+
+
+#nop -- vim: syntax=tt

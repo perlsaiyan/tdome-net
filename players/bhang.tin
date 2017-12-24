@@ -127,6 +127,4 @@
 #nop -- ---------------------------------------------------------------
 #nop -- Tintin files we only want for this character
 #nop -- ---------------------------------------------------------------
-#read $ttd/speedwalk.tin
-#read $ttd/rescue.tin
-#read $ttd/grouping.tin
+#read $lib/speedwalk.tin

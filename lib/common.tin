@@ -259,6 +259,7 @@
 #read $lib/highlights.tin
 #read $lib/banking.tin
 #read $lib/exp.tin
+#read $lib/grouping.tin
 #read $lib/looting.tin
 #read $lib/socials.tin
 #read $lib/comms.tin
