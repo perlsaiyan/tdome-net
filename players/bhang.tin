@@ -77,7 +77,7 @@
 #alias {bank} {
   rem ${mainpack};
   get bank ${mainpack};
-  dep $cash[$name];
+  dep $cash[$name]; bal;
   put bank ${mainpack};
   wear ${mainpack};
 }
