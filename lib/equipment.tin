@@ -1,0 +1,95 @@
+#nop -- Dealing with equipment
+#nop -- vim: syntax=tt
+
+#class {equipment} {kill}
+#class {equipment} {open}
+
+#nop -- this collects info about gear, counts slots, checks that gear is expected
+#nop -- in the regex, the slot is %1 AND %2, %3 is space, %4 is the equipment
+#action {^<{(worn.*|wielded|dual wielded|overshield|affixed to armor|encircling body|accessory|pierced.*)}>{[ ]+}{.*}$}
+{
+    #var tSLOT %1;
+    #var tSPAC %3;
+    #var tITEM %4;
+    #math EQSlotCount[$tSLOT] {$EQSlotCount[%1] + 1};
+    #if {"$tSLOT" == "worn around neck"} {
+        #regex $tITEM {{($eqREXP[$tSLOT])}} {#nop} {#list {badEQ} {add} {$tSLOT - $tITEM}}
+    };
+    #elseif {"$tSLOT" == "worn around wrist"} {
+        #regex $tITEM {{($eqREXP[$tSLOT])}} {#nop} {#list {badEQ} {add} {$tSLOT - $tITEM}}
+    };
+    #elseif {"$tSLOT" == "worn on finger"} {
+        #regex $tITEM {{($eqREXP[$tSLOT])}} {#nop} {#list {badEQ} {add} {$tSLOT - $tITEM}}
+    };
+    #elseif {("$tSLOT" == "worn in left ear") || ("$tSLOT" == "worn in right ear")} {
+        #regex $tITEM {{($eqREXP[worn in ear])}} {#nop} {#list {badEQ} {add} {$tSLOT - $tITEM}}
+    };
+    #else {
+        #regex $tITEM $eqREXP[$tSLOT] {#nop} {#list {badEQ} {add} {$tSLOT - $tITEM}}
+    };
+}
+
+
+#nop -- this is what you run to check someone, without an argument check self
+#alias {EQCheck}
+{
+  #var myEQBySlot {};
+  #var EQSlotCount {};
+  #list {badEQ} {clear};
+  #if {"%1" == ""} {equipment} {look %1};
+  #delay 1 EQShowBads %1;
+}
+
+#nop -- internal use only, displays problems
+#alias {EQShowBads}
+{
+ #if {"%1" == ""}
+ {
+   #var EQName $name;
+   #all #showme <fff>BADEQ Report for $EQName;
+   #foreach {$badEQ[%*]} {bad} { #all #showme <cca> $bad;}
+ } {#var EQName %1}
+
+   #all #showme <fff>Missing Slot Report for $EQName;
+   #foreach {worn on hands;
+    worn on head;
+    worn about body;
+    worn on arms;
+    worn on back;
+    worn on body;
+    worn on face;
+    worn in left ear;
+    worn in right ear;
+    worn on legs;
+    worn as shield;
+    worn about waist;
+    wielded;
+    accessory;
+    dual wielded;
+    worn on feet;
+    pierced brow;
+    pierced tongue;
+    pierced cock;
+    pierced septum;
+    pierced lip;
+    pierced labret;
+    pierced skull;
+    overshield;
+    affixed to armor;
+    encircling body;
+    } {slot} {
+     #if {"$EQSlotCount[$slot]" == ""} {#all #showme <cca> $slot ($eqREXP[$slot])}
+   }
+
+   #if {"$EQSlotCount[worn on finger]" == ""} {#all #showme <cca> Both fingers ($eqREXP[worn on finger])};
+   #elseif {$EQSlotCount[worn on finger] < 2} {#all #showme <cca> One finger ($eqREXP[worn on finger])};
+   #if {"$EQSlotCount[worn around neck]" == ""} {#all #showme <cca> Both neck ($eqREXP[worn around neck])};
+   #elseif {$EQSlotCount[worn around neck] < 2} {#all #showme <cca> One neck ($eqREXP[worn around neck])};
+   #if {"$EQSlotCount[worn around wrist]" == ""} {#all #showme <cca> Both wrist ($eqREXP[worn around wrist])};
+   #elseif {$EQSlotCount[worn around wrist] < 2} {#all #showme <cca> One wrist ($eqREXP[worn around wrist])};
+
+}
+
+
+#class {equipment} {close}
+

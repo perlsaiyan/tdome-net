@@ -1,0 +1,68 @@
+#nop -- This file is to translate caster's magic into english
+#nop -- vim: syntax=tt
+
+#class {translation} {kill}
+#class {translation} {open}
+
+#nop -- Curists
+#sub {qfzahz xahzf} {create water}
+#sub {qfzahz yaae} {create food}
+#sub {judicandus nose} {cure blindness}
+#sub {candusquaralla} {rejuvinate}
+#sub {gaiqhjabral} {sanctuary}
+#nop -- Slingers
+#sub {felinfra} {catseye}
+#sub {XXXXXXXX} {focus}
+#sub {XXXXXXXX} {create artifact}
+#sub {oculoinfra enzuguburuhl} {detect invisibility}
+#nop chill touch
+#nop invisibility
+#nop burning hands
+#sub {waouq qpzgh} {magic chest}
+#sub {waouqar sfahzqhuai} {magical protection}
+#sub {ghcandusiohp} {strength}
+#sub {gpaqtir ofags} {shocking grasp}
+#sub {noseosta} {blindness}
+#nop teleport
+#sub {yzabra} {fear}
+#sub {picoiir barh} {lightning bolt}
+#sub {perim an gjwwaiir} {circle of summon}
+#sub {qaiyjgrusata} {conjuration}
+#sub {qahif gsfal} {color spray}
+#sub {xahzfxart} {water walk}
+#sub {judifgz} {curse}
+#sub {qaiz an qare} {cone of cold}
+#sub {unsozfol efaui} {energy drain}
+#sub {qpabraw dudasabru} {charm person}
+#sub {grzzs} {sleep}
+#nop enchant weapon
+#nop enchant armor
+#sub {pirasphera} {fireball}
+#sub {qarruasz} {calliope}
+#sub {oculoiguyl} {densify}
+#sub {brjf} {blur}
+#sub {gpaszgpuyh} {shapeshift}
+#sub {unsozfzahz} {enervate}
+#sub {hiqahz dudasabru} {locate person}
+#sub {qaihfar xzahpzf} {control weather}
+#sub {uoculoihuyl} {identify}
+#sub {sharpnel an sfzeahuai} {sword of predation}
+#sub {paghunso} {hasten}
+#sub {exfjshuai} {disruption}
+#nop {perim an pira} {circle of fire}
+#sub {canduswazz enzuguburuhl} {remove invisibility}
+#sub {ghjsaf} {stupor}
+#nop disintegration
+#nop imbue artifact
+#nop firestorm
+#sub {oculoinfra waouq} {detect magic}
+#sub {perim an felinfra} {circle of catseye}
+#sub {waouq wuggurz} {magic missile}
+
+# fanatic spells
+#sub {candusgjfcandusqh} {resurrection}
+
+#alias {reloadTranslation} {#read $ttd/translation.tin}
+#tab reloadTranslation
+
+#class {translation} {close}

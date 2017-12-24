@@ -1,0 +1,95 @@
+#nop -- Spell affects tracking
+#nop -- vim:syntax=tt
+
+#class {bufs} {kill}
+#class {bufs} {open}
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Commands/Aliases intended for human use
+#nop -- ---------------------------------------------------------------------
+
+#nop -- show us what we're working with
+#tab showBufs
+#alias showBufs {
+
+  #foreach {$registeredPlayers[%*]} {tmpChar} {
+      #foreach {$bufs[$tmpChar][%*]} {tmpBuf} {
+        #echo {<cfc>$tmpBuf is $bufs[$tmpChar][$tmpBuf]};
+      };
+  };
+
+}
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Control of buf status
+#nop -- we call tickCalibrate on spell affects wearing off
+#nop -- ---------------------------------------------------------------------
+#alias {bufOn}  {
+  global {bufs[$name][%1]} {1};
+  #if { ! &bufStart[$name][%1] } { #var bufStart[$name][%1] {0} };
+  #if {$bufStart[$name][%1] == 0} {
+      global {bufStart[$name][%1]} {@getEpoch{}};
+      global {bufSLevel[$name][%1]} {$curLevel[$name]};
+  };
+}
+#alias {bufOff} {
+  #echo {<cce>--==+ BUFEND: %1 (lev $bufSLevel[$name][%1]), lasted @delta{$bufStart[$name][%1]} +==--};
+  global {bufs[$name][%1]} {0}; 
+  global {bufStart[$name][%1]} {0};
+  tickCalibrate;
+}
+
+
+#nop -- ---------------------------------------------------------------------
+#nop -- On/Off messages
+#nop -- Use these to set/remove affect flags
+#nop -- ---------------------------------------------------------------------
+#nop -- Is on, set flags, don't set start time
+#act {^You have some extra arms} {bufOn arms}
+#act {^You feel blessed.} {bufOn bless}
+#act {^You have long, sharp claws} {bufOn claws}
+#act {^A horde of eldritch spirits erupts from the ground, surging towards you to envelope you in an ebon miasma.} {bufOn eldritch}
+#act {^Your fist glows with a holy aura.} {bufOn fist}
+#act {^You start glowing.} {bufOn sanct}
+#act {^You have a big turtle shell.} {bufOn shell}
+
+#nop -- Start buf
+#act {^Extra arms grow out from your body.} {bufOn arms}
+#act {^You grow a big scaly shell!} {bufOn shell}
+#act {^You grow some sharp, nasty claws!} {bufOn claws}
+
+#nop -- Stop buf
+#act {^Your extra arms suck back into your body.} {bufOff arms}
+#act {^You feel less righteous.} {bufOff bless}
+#act {^Your claws shrink back into your fingers.} {bufOff claws}
+#act {^Your fingers droop back to their stubby selves.} {bufOff fingers}
+#act {^Your ability to ward off good fades.} {bufOff protg}
+#act {^The aura around your body fades.} {bufOff sanct}
+#act {^Your scaly shell slowly shrinks back into your skin.} {bufOff shell}
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Functions
+#nop -- ---------------------------------------------------------------------
+#function isBuf { #format {result} {$bufs[$name][%1]} }
+#function delta { #math {result} {(@getEpoch{} - %1) / $tickValue}}
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Character Table
+#nop -- ---------------------------------------------------------------------
+#var bufTable {
+  {shell} {⚇}
+  {calm}  {☮}
+}
+
+#nop -- ---------------------------------------------------------------------
+#nop -- These need to move to time
+#nop -- ---------------------------------------------------------------------
+#act {%1's scaly shell slowly shrinks back into his skin.} {bufOff shell}
+
+#nop -- ---------------------------------------------------------------------
+#nop -- TODO
+#nop -- ---------------------------------------------------------------------
+#nop The lightning stops.
+#nop Kalik returns to her previous form.
+
+#class {bufs} {close}

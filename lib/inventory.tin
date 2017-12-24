@@ -1,0 +1,117 @@
+#nop -- Inventory Management
+
+#class {inventorydb} {kill}
+#class {inventorydb} {open}
+
+#class {inventorydb} {read} {$db/inventory.db}
+#class {inventorydb} {close}
+
+#class {inventory} {kill}
+#class {inventory} {open}
+
+#nop -- ---------------------------------------------------------------
+#nop -- Variables
+#nop -- ---------------------------------------------------------------
+
+#nop -- Configuration
+#var lootPack {an incorporeal orb hovering overhead};
+#var lootPackKW {incorporeal};
+
+#nop -- Internal Use (do not edit)
+#list {invInPack} {create};
+#var shopkeeperType[Anjaho the Witch] {magic};
+#var shopkeeperType[Guertot the Armorer] {armor};
+#var shopkeeperType[jimmy] {gun};
+#var shopkeeperType[Loesch the Trader] {clothes};
+#var shopkeeperType[Vespag the Weaponsmith] {weapon};
+#var shopkeeperType[the Witch Doctor] {gem};
+
+#list invNoPack {create} {a Gameboy Advance SP};
+
+#nop -- ---------------------------------------------------------------
+#nop -- Actions
+#nop -- ---------------------------------------------------------------
+
+#action {^You put {.*} in an incorporeal orb hovering overhead.$} {
+  #local {_item} {%1};
+  #replace {$_item} { } {;};
+  #list {tmpKW} {create} $_item;
+
+  #if {&{itemKW[%1]} == 0} {
+    #var itemKW[%1] $tmpKW[-1];
+  };
+
+  #if {&{itemTYPE[%1]} == 0} {
+    #var itemTYPE[%1] {unknown};
+  };
+
+  #line gag;
+  #echo {<cdc>Packing up %1 ($itemKW[%1]) ($itemTYPE[%1]).};
+  #list {invInPack} {add} {%1};
+
+  #nop -- Maybe this item shouldn't be packed;
+  #list {invNoPack} {find} {$_item} {_tmpKeep};
+  #if {$_tmpKeep > 0} {
+    #send {get $itemKW[$_item] orb};
+  };
+  invSave;
+
+};
+
+#action {^You get {.*} from an incorporeal orb hovering overhead.$} {
+
+    #local {_item} {%1};
+    #list {invInPack} {find} {$_item} {_tmpIndex};
+    #if {$_tmpIndex > 0} {
+        #list invInPack delete $_tmpIndex;
+    } {
+        #echo {<cdc>Removed unregistered item "$_item" from pack.};
+        #line gag;
+    };
+}
+
+#action {^%1 now has %2.} {
+    #nop -- Selling something;
+    #if { $itemTYPE[%2] == "unknown" } {
+        #if { &{shopkeeperType[%1]} } {
+            #var itemTYPE[%2] $shopkeeperType[%1];
+            invSave;
+        };
+    };
+};
+
+
+
+#nop -- ---------------------------------------------------------------
+#nop -- Aliases
+#nop -- ---------------------------------------------------------------
+
+#tab invUnknown; #alias invUnknown {invUnpackByType unknown}
+#tab invGem; #alias invGem {invUnpackByType gem}
+#tab invGun; #alias invGun {invUnpackByType gun}
+#tab invMagic; #alias invMagic {invUnpackByType magic}
+#tab invWeapon; #alias invWeapon {invUnpackByType weapon}
+#tab invArmor; #alias invArmor {invUnpackByType armor}
+#tab invClothing; #alias invClothing {invUnpackByType clothes}
+
+
+#alias {invUnpackByType %1} {
+
+    #foreach {$invInPack[%*]} {_tmpInv} {
+        #if {"$itemTYPE[$_tmpInv]" == "%1"} {
+            #local kw $itemKW[$_tmpInv];
+            #send {get $kw $lootPackKW};
+        };
+    };
+
+}
+
+#alias invSave { #class {inventorydb} {write} {$ttd/db/inventory.db}};
+
+#nop -- ---------------------------------------------------------------
+#nop -- Functions
+#nop -- ---------------------------------------------------------------
+
+#class {inventory} {close}
+
+#nop -- vim: syntax=tt

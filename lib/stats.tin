@@ -1,0 +1,243 @@
+#nop -- Statistics and affects
+#nop -- vim:syntax=tt
+
+#class {statusBar} {kill}
+#class {statusBar} {open}
+#var statRowsBottom {4}
+#var statRowsTop    {4}
+#split {$statRowsTop} {$statRowsBottom}
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Initialize variables
+#nop -- ---------------------------------------------------------------------
+global {maxMA[$name]} {1}
+global {maxMV[$name]} {1}
+global {maxHP[$name]} {1}
+global {statusLine[$name]} {No news is good news....}
+global {rescueMe[$name]} {0};
+
+#var GYRColor[16] <afa>;
+#var GYRColor[15] <aea>;
+#var GYRColor[14] <ada>;
+#var GYRColor[13] <bda>;
+#var GYRColor[12] <cda>;
+#var GYRColor[11] <dda>;
+#var GYRColor[10] <eea>;
+#var GYRColor[9] <ffa>;
+#var GYRColor[8] <fea>;
+#var GYRColor[7] <fda>;
+#var GYRColor[6] <fca>;
+#var GYRColor[5] <fba>;
+#var GYRColor[4] <faa>;
+#var GYRColor[3] <faa>;
+#var GYRColor[2] <faa>;
+#var GYRColor[1] <faa>;
+#var GYRColor[0] <faa>;
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Aliases
+#nop -- ---------------------------------------------------------------------
+
+#tab statSplit
+#alias statSplit {
+  global statRowsTop {%1};
+  global statRowsBottom {%2};
+  #all #split {$statRowsTop} {$statRowsBottom};
+}
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Ticks, Counters
+#nop -- ---------------------------------------------------------------------
+
+#nop -- Generate topline of status bar with Session, Tank, Timer
+#tick {statusBar} {
+  #format {sbar} {<faa>Tank: %s <fff>| %s%s%02s<099> | %02s:00 | %s | %+20s | %s | %s}
+    {$tank} {@counterBGColor{@secsLeftInTick{}}} {@tickColor{}}
+    {@secsLeftInTick{}}
+    {@clockColor{}$mudTime}
+    {@OpponentHealthBarGraph{}}
+    {@OpponentName{}}
+    {$GIT_BRANCH[1]}
+    {@nextMob{}};
+  #showme {$sbar} {$statRowsBottom};
+  #unvar {sbar};
+} { 1 }
+
+# Let's update our stats bar 4 times a second
+#tick {showStats} {showStats} {.25};
+#alias showStats {
+    updateVitals;
+
+    #list {registeredPlayers} {find} {$name} {fooIndex};
+    #if {$fooIndex} {
+        #all #showme {<ebb>$curLevel[$name]<fff>|@statPlayerColor{$name}$playerInitial[$name]<000><078>: $vHPBar[$name]} {$statRowsBottom - $fooIndex};
+    }
+}
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Functions
+#nop -- ---------------------------------------------------------------------
+
+#function GYRColor {
+ #math _tmp {(100 * %1 / %2)/6};
+ #var result $GYRColor[${_tmp}];
+}
+
+#function {fColourStat}
+{
+    #if {100 * %1 / %2 < 33}
+    {
+        #VAR result {<118>};
+    }
+    {
+        #if {100 * %1 / %2 > 66}
+    {
+        #VAR result {<128>};
+    }
+    {
+        #VAR result {<238>};
+        };
+    };
+};
+
+#function counterBGColor {
+  #if {%1 < 10} {#var result {<BAA>}} {#var result {<AAA>}}
+};
+
+#nop doBarGraph {max value} {current value}
+#function doBarGraph {
+ #var {_barMax}  %1;
+ #var {_barCur}  %2;
+ #math {_barFill} { ( (${_barCur} * 100 ) / ( ${_barMax})) / 10.0};
+ #format {_barFill2} {%d} {${_barFill}};
+ #math {_barFill3} {${_barFill} - ${_barFill2}};
+ #var {_barBar} {};
+ #if {${_barFill2} > 0} {
+   #loop {1} {${_barFill2}} {cnt} {
+     #var {_barBar} {${_barBar}█};
+   };
+ };
+ #if {${_barFill3} > .5} {#var {_barBar} {${_barBar}▌}};
+ #var {_barBar} {${_barBar}              };
+ #format {result} {<fff>[%s<G03>%.10s<fff><AAA>]}
+    {@GYRColor{{${_barCur}}{${_barMax}}}}
+    {${_barBar}};
+}
+
+#function OpponentHealthBarGraph {
+ #var result @doBarGraph{{100} {$curTargetHealth}};
+}
+
+#function OpponentName {
+  #var result {$curTarget};
+}
+
+#function statPlayerColor {
+  #if { "$cursession" == "$sessionMap[%1]" } {
+    #var result {<fff><AAF>};
+  } {
+    #var result {<fff>};
+  };
+}
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Actions
+#nop -- ---------------------------------------------------------------------
+
+#nop -- Grab our prompt values
+event_register {prompt} {HMV} {
+    global {preHP[$name]} {$curHP[$name]};
+
+    global {curHP[$name]} {%2};
+    global {curMA[$name]} {%3};
+    global {curMV[$name]} {%4};
+
+    #if {$curHP[$name]  < $preHP[$name]} {
+      global {rescueMe[$name]} {1};
+    }
+
+    #if {"$tank" == "$name"} {
+      #foreach {$registeredPlayers[%*]} {rescueCheck} {
+        #if {"$rescueMe[$rescueCheck]" == "1"} {
+          #if {"$rescueCheck" != "$name"} {
+            #showme <fff>Autorescue $rescueCheck;
+            rescue $rescueCheck;
+            global {rescueMe[$rescueCheck]} {0};
+          }
+        }
+      }
+    };
+
+    #if {$curHP[$name] > $maxHP[$name]} {global {maxHP[$name]} {$curHP[$name]}};
+    #if {$curMA[$name] > $maxMA[$name]} {global {maxMA[$name]} {$curMA[$name]}};
+    #if {$curMV[$name] > $maxMV[$name]} {global {maxMV[$name]} {$curMV[$name]}};
+};
+
+#nop -- This formats the status line for display
+#alias {updateVitals} {
+   #if {$curLevel[$name] < 30} { 
+     #var tmpXP $exp[$name] 
+   } {
+     #if { @XP{} > @xpToRemort{} } {
+       #var tmpXP REMORT
+     } {
+       #math tmpXP { @xpToRemort{} - @XP{} }
+     };
+   };
+
+   #FORMAT {vHPTemp} {%s%+4s<099>H %s%+4s<099>M %s%+4s<099>V|<bbd>%+8s|<ddd>%+4s|%s}
+        {@GYRColor{{$curHP[$name]}{$maxHP[$name]}}}
+        {$curHP[$name]}
+        {@fColourStat{{$curMA[$name]}{$maxMA[$name]}}}
+        {$curMA[$name]}
+        {@fColourStat{{$curMV[$name]}{$maxMV[$name]}}}
+        {$curMV[$name]}
+        {$tmpXP}
+        {$xpRate[$name]}
+        {$statusLine[$name]} ;
+
+    global {vHPBar[$name]} {$vHPTemp}
+};
+
+
+#alias statusUpdate {
+  #var tmpStatus %1;
+  #var tmpColor  %2;
+  #var tmpTime   %3;
+
+  global statusLine[$name] {$tmpColor$tmpStatus};
+  #delay {statusFade} {global {statusLine[$name]} {<ccc>$tmpStatus}} {2};
+  #delay {statusClear} {global {statusLine[$name]} {<ccc>}} {10};
+
+}
+
+#nop -- This needs to move to comms.tin TODO
+#action {^%1 group-tels '%0} {#var {statusLine[$name]} {<059>%1 group-tels: %0<099>} };
+
+
+
+#nop -- This is all shit.  We need a Bufs struct to hold this info and
+#nop -- functions to retrieve values.  Include time it was cast.
+#action {^You start glowing.} {global {BufSanct[$name]} {1}}
+#action {^You are protected by a glowing light.} {global {BufSanct[$name]} {1}}
+#action {^The aura around your body fades.} {global {BufSanct[$name]} {0}}
+
+#action {^Your eyes tingle.} {global {BufDetInv[$name]} {1}}
+#action {^You are sensitive to the presence of invisible things.} {global {BufDetInv[$name]} {1}}
+#action {^The detect invisible wears off.} {global {BufDetInv[$name]} {0}}
+
+#action {^You draw power from the ancient ones.} {global {BufHasten[$name]} {1}}
+#action {^You have been hastened by the ancient ones.} {global {BufHasten[$name]} {1}}
+#action {^The ancient ones no longer hasten you.} {global {BufHasten[$name]} {0}}
+
+#action {^Your feet feel very light.} {global {BufWaterWalk[$name]} {1}}
+#action {^You no longer feel light on your feet.} {global {BufWaterWalk[$name]} {0}}
+
+#action {^Your fist glows with holy power.} {global {BufHolyFist[$name]} {1}}
+#action {^You are rescued by Bhang, you are confused!} {doAssist}
+
+#action {%1 just tried to summon you to: %0} {statusUpdate {%1 summon attempt to: %0} {<cfa>}}
+#action {^Nahh... you're too calm to do that!} {statusUpdate {Too calm for action.} {<dbf>}}
+#action {You have been paralyzed by debilitating pain!} {statusUpdate {Took one to the giblets...} {<fbd>}}
+
+#class {statusBar} {close}

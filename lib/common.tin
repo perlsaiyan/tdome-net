@@ -1,0 +1,316 @@
+#nop -- Common Configuration
+#nop -- vim: syntax=tt
+
+
+#variable tank bhang
+#variable assisting  1
+#variable showSigns  0
+#var signUser Bhang
+#var lookingAtRoom 0;
+
+#ACTION {^#SESSION '%0' ACTIVATED.} {#buffer end;#all #var cursession %0; updateVitals}
+#ACTION {You need some food.} {	#all #showme $name is hungry! } {5}
+#ACTION {^You rise a level} {
+ #if { "$title" != "" } {
+       title $title;
+         }
+ #all #showme $name rose a level!
+} {5}
+#ACTION {^You're getting thirsty}  { drink canteen ; #all #showme $name is thirsty!} {5}
+#ACTION {You need %0 exp to level.} {#all #var exp[$name] %0} {5}
+#ACTION {^Nyla gives you a Magic Mushroom.} {eat mushroom} {5}
+#ACTION {^Someone gives you a Magic Mushroom.} {eat mushroom} {5}
+#ACTION {^You wish that your wounds would stop BLEEDING so much!} { #all #showme <acf> $name IS BEING HURT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}
+
+#act {^[ Remorts:%1%d ] [ Deaths:%3%d ] [ Experience: %5%d ]} {
+  global {curRM[$name]} {%2};
+  global {curXP[$name]} {%6};
+} {5}
+#act {^[ Con:%1%d ] [ Kills:%3%d ] [ Credits:%5$%6%d ]} {
+  global {curCON[$name]} {%2};
+  global {curKills[$name]} {%4};
+  global {cash[$name]} {%7};
+} {5}
+
+
+#alias {global} {#all #var {%1} {%2}}
+
+#alias {scan} {l n;l e; l s;l w;l u; l d}
+#alias {getWear} {get %1; wear %1}
+
+#var HisHer[male] {His};
+#var HisHer[female] {Her};
+#var hisher[male] {his};
+#var hisher[female] {her};
+#var logDir {/home/tom/logs}
+
+#nop -- Kill functions (common)
+#alias {kt} {kill tek}
+#alias kg {kil guard}
+#alias kh {kil hoard}
+#alias km {kil mantis}
+
+#alias {bp} { #bh pick %0; }
+
+#alias {le} {save}
+#alias {lea} {save}
+
+#alias {stat} {#sys curl -L "http://tdome.azurewebsites.net/stat.php?item1=%1&item2=%2"}
+
+#alias {status} {#all doShowStats;showtank}
+#alias {doShowStats} {
+    #all #format {line}  {%+6s | %+8s XP | %+8s bank | %+8s cash} {$name} {$exp[$name]} {$bal[$name]} {$cash[$name]};
+    #all #showme <acf> $line;
+}
+#alias {showtank} {#all #showme <faa> Current tank is $tank}
+#alias {settank} {#all #var tank %1}
+
+#nop -- Mutant functions
+#alias {scar} {#bh grow scar}
+#alias {claws} {#bh grow claws}
+#alias {shell} {#bh grow shell}
+#alias {fingers} {#bh grow fingers}
+#alias {body} {#bh grow body}
+#alias {dc} {#bh devour corpse}
+#alias {hb}     {#bh headbutt %1} {5}
+
+#tab registerPlayers
+#alias {registerPlayers} {
+    #all #list {registeredPlayers} {clear};
+    #all registerSelf;
+}
+
+#alias {registerSelf} {#all #list {registeredPlayers} {sort} {$name}}
+
+#TAB expStart
+#alias {expStart} {#var startXP[$name] $exp[$name]}
+#TAB expEarned
+#alias {expEarned} {#math tempXP {$exp[$name] - $startXP}; #showme $name earned $tempXP}
+
+#message variable off
+#message tick off
+
+#CONFIG           {256 COLORS}  {ON}
+#CONFIG           {AUTO TAB}  {5000}
+#CONFIG           {BUFFER SIZE}  {20000}
+#CONFIG           {COMMAND COLOR}  {<078>}
+#nop -- #CONFIG           {COLOR PATCH}  {ON}
+#CONFIG           {COMMAND ECHO}  {ON}
+#CONFIG           {CONNECT RETRY}  {15}
+#CONFIG           {HISTORY SIZE}  {1000}
+#CONFIG           {LOG}  {RAW}
+#CONFIG           {PACKET PATCH}  {0.00}
+#CONFIG           {REPEAT CHAR}  {!}
+#CONFIG           {REPEAT ENTER}  {OFF}
+#CONFIG           {SCROLL LOCK}  {ON}
+#CONFIG           {SPEEDWALK}  {ON}
+#CONFIG           {TINTIN CHAR}  {#}
+#CONFIG           {VERBATIM}  {OFF}
+#CONFIG           {VERBATIM CHAR}  {\}
+#CONFIG           {VERBOSE}  {OFF}
+#CONFIG           {WORDWRAP}  {ON}
+#CONFIG           {CHARSET} {UTF-8}
+#PATHDIR          {d}  {u}  {32}
+#PATHDIR          {e}  {w}  {2}
+#PATHDIR          {n}  {s}  {1}
+#PATHDIR          {ne}  {sw}  {3}
+#PATHDIR          {nw}  {se}  {9}
+#PATHDIR          {s}  {n}  {4}
+#PATHDIR          {se}  {nw}  {6}
+#PATHDIR          {sw}  {ne}  {12}
+#PATHDIR          {u}  {d}  {16}
+#PATHDIR          {w}  {e}  {8}
+
+#TAB cash2bhang
+
+
+#nop -- Mapping aliases we need to clean up
+#alias azer { #map read $zone/azer.map}
+
+
+#tick {timer} {   #if { "$cursession" != "$sessionname"} {score} {#cr} } {30}
+#tick {timeStamp} { #format {logDATE} {%t} {%Y-%m-%d %T} ; #showme <ccd>Timestamp: $logDATE} {600}
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Sling defaults, like "tank" or "self"
+#nop -- ---------------------------------------------------------------------
+#alias {slingTankOrTarget} {
+ #if {"%2" == ""}
+ {
+   sling '%1' $tank
+ } {
+   sling '%1' %2
+ }
+}{5}
+#alias {slingSelfOrTarget} {
+ #if {"%2" == ""}
+ {
+   sling '%1' $name
+ } {
+   sling '%1' %2
+ }
+}{5}
+#alias {slingVictimOrTarget} {
+ #if {"%2" == ""}
+ {
+   sling '%1' $zzTarget
+ } {
+   sling '%1' %2
+ }
+} {5}
+
+
+#alias {log}
+{
+    #if {"%0" == "on"}
+    {
+        #if {"$logging" != "on"}
+        {
+            #format {logfile} {/home/tom/logs/%t-%s.log} {%Y-%m-%d} {$name};
+            #log append $logfile;
+            #var logging on
+        };
+        #else
+        {
+            #showme You are already logging.
+        }
+    };
+    #elseif {"%0" == "off"}
+    {
+        #if {"$logging" == "on"}
+        {
+            #log off;
+            #var logging off
+        };
+        #else
+        {
+            #showme You are not logging.
+        }
+    };
+    #else
+    {
+        #showme Turn logging on or off?
+    }
+}
+
+#nop -- Rooms that are outdoors
+#nop -- This needs to be higher priority than indoors
+#action {~\e[36m%1 [%2] [%3} {
+  #var lookingAtRoom 1;
+  #var curRoom %1;
+  #var curRoomKey @roomTitleClean{%1 [%3};
+  #var curRoomTerrain @roomTerrainClean{%3};
+  #var curRoomTerrainColor @roomTerrainColor{$curRoomTerrain};
+  #list {seenMobs} {clear};
+  #list {seenMobsPriority} {clear};
+  #list {roomMobs} {clear};
+  #list {roomItems} {clear};
+  #undelay {getMoney};
+
+  roomCapture on;
+  #var showSigns 1;
+} {2}
+#nop -- Rooms that are indoors
+#action {~\e[36m%1 [%2} {
+  #var lookingAtRoom 1;
+  #var curRoom %1;
+  #var curRoomKey @roomTitleClean{%1 [%2};
+  #var curRoomTerrain @roomTerrainClean{%2};
+  #var curRoomTerrainColor @roomTerrainColor{$curRoomTerrain};
+  #list {seenMobs} {clear};
+  #list {seenMobsPriority} {clear};
+  #list {roomMobs} {clear};
+  #list {roomItems} {clear};
+  #undelay {getMoney};
+
+  roomCapture on;
+  #var showSigns 1;
+} {3}
+
+
+#action {up for sale, min bid} {aucstat}
+
+
+#alias friendRecall { #sys {cd $logDir;sed -n '/^%1 is using/I,/^$/p' * | tac | tail -n+2 | sed -e '/^$/,$d' | tac}}
+
+#alias {seenMobs}
+{
+   #list seenMobs add %0;
+   #showme <fff>☠ \e[33m\
+};
+#alias {seenMobsPriority}
+{
+   #list seenMobsPriority add %0;
+   #showme <faa>☠ \e[33m\
+};
+
+#nop ------------------------------------------------------------------------
+#nop Functions
+#nop ------------------------------------------------------------------------
+
+#function prettyName {
+  #format result {%n} {$name}
+}
+
+#read $lib/events.tin
+#read $lib/stats.tin
+#read $lib/translation.tin
+#read $lib/equipment.tin
+#read $lib/highlights.tin
+#read $lib/banking.tin
+#read $lib/exp.tin
+#read $lib/looting.tin
+#read $lib/socials.tin
+#read $lib/comms.tin
+#read $lib/speedwalk.tin
+#read $lib/time.tin
+#read $lib/bufs.tin
+#read $lib/counters.tin
+#read $lib/fighting.tin
+#read $lib/signpost.tin
+#read $lib/combat.tin
+#read $lib/mapping.tin
+#read $lib/kill.tin
+#read $lib/inventory.tin
+
+#if { "$class" != "mutant" } {
+   #read $lib/practice.tin;
+};
+
+
+log on
+#ACTION {VECTOR: %1}
+{
+        #highlight {%1} {white}
+}
+{5}
+
+#ACTION {CONFIRMED: %1 **}
+{
+        #highlight {%1} white;
+        #action {GPS SYSTEM} {#unhigh %1}
+}
+{5}
+
+#nop -- ---------------------------------------------------------------
+#nop -- Events we need everywhere
+#nop -- I'm not sure this is in the correct place
+#nop -- ---------------------------------------------------------------
+
+#action {< %1H %2M %3V >} { event_raise {prompt} {%1} {%2} {%3} }
+event_register {prompt} {ENDROOMLOOK} {roomLookEnd}
+
+#alias roomLookEnd {
+  #if { $lookingAtRoom } {
+    #var lookingAtRoom 0;
+  };
+  #nop %1;
+}
+
+#action {~\e[0m$} { event_raise {blankline} }
+
+#nop -- ---------------------------------------------------------------
+
+#alias {syslog} {#showme <CCA>SYSLOG: %0}
+#alias {tr %1} {#alias yy {operate advance track %1}} @ {5}
+#alias {tr} {#unalias yy {#echo {<fac>You need to set a target with tr <target>.}};#echo {<fac>Use tr <target> to set a target.}}

@@ -1,0 +1,130 @@
+#nop -- Mapping utilities
+
+#class {map} {kill}
+#class {map} {open}
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Configuration and Variables
+#nop -- ---------------------------------------------------------------------
+
+#var mapFile {/tmp/ram/tdome-map}
+
+#nop -- Any areas should have a mapAreas entry;
+  #var mapAreas[azer] {Azer Island}
+  #var mapAreas[iog]  {Isle of Glass}
+  #var mapAreas[nv]   {Northern Village}
+  #var mapAreas[ht]   {Halloween Town}
+
+#nop -- mapInfo contains textual information about an area;
+  #var mapInfo[azer] {From Silicia transporter, go d9w16s.}
+  #var mapInfo[iog]  {From Silicia transporter, go dirs.}
+  #var mapInfo[nv]   {From Ground Zero, 35n}
+  #var mapInfo[ht]   {You know where this is}
+
+#nop -- terrain type colors;
+  #var mapTerrain[Desert] {<eeb>};
+  #var mapTerrain[Desert road / path] {};
+  #var mapTerrain[Field] {};
+  #var mapTerrain[Forest] {<bdb>};
+  #var mapTerrain[Hills] {<dda>};
+  #var mapTerrain[Inside] {<ddd>};
+  #var mapTerrain[Mountains] {<ddc>};
+  #var mapTerrain[Smooth] {<fff>};
+  #var mapTerrain[Swamp] {<bbb>};
+  #var mapTerrain[Tundra] {};
+  #var mapTerrain[Water] {<bbf>};
+  #var mapTerrain[UNKNOWN] {<faa>};
+
+#var mapEmbed off;
+
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Aliases and Commands
+#nop -- ---------------------------------------------------------------------
+
+#tab gotoCurrentRoom
+#alias gotoCurrentRoom { #map goto {$curRoomSignKeyBis24}}
+
+#nop -- "map" is the central command for dealing with map areas;
+#alias map {
+  #var tmpSwitch %1;
+  #switch {$tmpSwitch} {
+    #case "info" {
+        #echo {<cfc>AREA CODE<078>   <cfc>AREA NAME<078>};
+        #foreach {$mapAreas[]} {tmpMA} {
+            #format {mapLine} {%+9s   %-20s} {$tmpMA} {$mapAreas[$tmpMA]};
+            #echo {$mapLine};
+        };
+        #echo {\n\n};
+     };
+     #default echo {<fff>USAGE: map <info>};
+  };
+};
+
+#nop -- Turn the embedded map on/off;
+#alias mapon {
+
+    #var mapEmbed on;
+    statSplit 10 4;
+    #untick commsUpdate;
+    #map flag vtmap on;
+}
+
+#alias mapoff {
+
+    #var mapEmbed off
+    statSplit 4 4;
+    #tick commsUpdate {commsUpdate} {1};
+    #map flag vtmap off
+
+}
+
+#tab mapSetName
+#alias mapSetName {
+    #map set roomname {$curRoomSignKeyBis24};
+    #map set roomcolor {@roomTerrainColor{$curRoomTerrain}};
+}
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Functions
+#nop -- ---------------------------------------------------------------------
+#function roomTerrainClean {
+  #var result %0;
+  #replace result {\e[0m} {};
+  #replace result { ]} {};
+}
+
+#function roomTerrainColor {
+  #var result {<faa>};
+  #if { "%1" == "Inside" } { #var result {<dde>} };
+  #if { "%1" == "Desert" } { #var result {<eeb>} };
+  #if { "%1" == "Desert road / path" } { #var result {<eed>} };
+  #if { "%1" == "Field" } { #var result {<cdc>} };
+  #if { "%1" == "Forest" } { #var result {<bdb>} };
+  #if { "%1" == "Hills" } { #var result {<dda>} };
+  #if { "%1" == "Mountains" } { #var result {<ddc>} };
+  #if { "%1" == "Smooth" } { #var result {<fff>} };
+  #if { "%1" == "Swamp" } { #var result {<bbb>} };
+  #if { "%1" == "Tundra" } { #var result {<eee>} };
+  #if { "%1" == "Water" } { #var result {<bbf>} };
+}
+
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Events
+#nop -- ---------------------------------------------------------------------
+#EVENT {MAP ENTER ROOM} {
+   #if {"$mapEmbed" == "off"} {
+      #map map {91x32} {$mapFile}
+   }
+}
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Stuff to run on launch
+#nop -- ---------------------------------------------------------------------
+
+#class {map} {close}
+
+
+
+#nop -- vim:syntax=tt

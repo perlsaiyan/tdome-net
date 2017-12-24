@@ -1,0 +1,28 @@
+#nop -- Counters stuff
+#nop -- vim:syntax=tt
+
+#class {counters} {kill}
+#class {counters} {open}
+
+
+#action {Nano-servos hidden within Manowar whirl into action and inject you with a biomechanical serum!} {
+    counter {$name} {manowar}
+}
+#action {You vampirically wrench energy from %1 as a Lurid Orb glows like a dark crimson heart!} {
+    counter {$name} {lurid}
+}
+#action {A ruinous shield's fanged maw gapes wide, vomiting forth an inferno of flame} {
+    #if {"$name" == "bhang"} { counter {$name} {ruinous} }
+}
+#action {The spirit of the golden dragon swirls around yellow claw!} {
+    #if {"$name" == "bhang"} { counter {$name} {yellowclaw} }
+}
+
+
+#nop -- generic alias to count events
+#alias {counter} {
+  #math {counterTmp} {$_counter[%1][%2] + 1};
+  global {_counter[%1][%2]} {$counterTmp};
+}
+
+#class {counters} {close}

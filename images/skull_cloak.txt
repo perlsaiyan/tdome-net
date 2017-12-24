@@ -1,0 +1,12 @@
+#var image[1] <aaa><AAA>▄▄▄▄▄▄▄▄<ccc><BBB>▄<ddd><DDD>▄<FFF>▄<DDD>▄<BBC>▄<BBB>▄<ccc>▄<bbb>▄<AAB>▄<ccc><BBB>▄▄<bbc>▄<bbb>▄<ccc>▄<ddd>▄<CCC>▄<ccc><DDD>▄<bba><FFF>▄<baa><EEE>▄<bbb><DDD>▄<ccc><CCC>▄<bbb><AAB>▄<BBB>▄<AAA>▄<aaa>▄▄<bbb><BBB>▄<aaa><AAA>▄▄▄▄▄
+#var image[2] <aaa><AAA>▄▄▄▄▄▄▄<aab>▄<bab><BBB>▄<aaa><AAA>▄▄▄▄<CCC>▄<DDD>▄<bbb>▄<ccc>▄<ddd>▄<EEE>▄<ccc><DDD>▄<bbb>▄<aaa>▄<CCC>▄<AAA>▄▄▄▄▄▄<bbb><BBB>▄<aaa><AAA>▄<bbb><BBB>▄<AAA>▄<aaa>▄<BBB>▄<AAA>▄▄▄▄▄
+#var image[3] <aaa><AAA>▄▄▄▄▄<bbb>▄<BBB>▄<aaa>▄<AAA>▄▄▄▄▄▄▄▄▄▄▄▄<bba>▄<aaa>▄▄▄▄▄▄▄▄<BBB>▄<bbb>▄<AAA>▄<BBB>▄<AAA>▄<aaa>▄<aab>▄<aaa>▄▄▄▄
+#var image[4] <aaa><AAA>▄▄▄<aab>▄<bbb><AAB>▄<aaa><BBB>▄<AAA>▄▄▄▄▄▄▄▄▄▄▄▄<bba>▄<BAA>▄<aaa><AAA>▄▄▄▄▄▄▄▄▄▄▄<CCC>▄<bbb><BBB>▄▄<aab><AAA>▄<aaa><AAB>▄<AAA>▄▄▄▄
+#var image[5] <aaa><AAA>▄▄▄<bbb><BBB>▄<aaa><AAA>▄▄▄▄▄▄▄▄▄▄▄<baa>▄▄<bba>▄<ddc><CCC>▄<edd><DDC>▄<ccb><BBA>▄<baa>▄<bbb>▄<BAA>▄<AAA>▄<bba>▄<aaa>▄▄▄▄▄▄<BBB>▄<bbb>▄▄<aab><AAA>▄<aaa>▄▄▄▄
+#var image[6] <aaa><AAA>▄▄▄▄▄▄▄▄▄▄▄▄<cbb><BBA>▄<CBB>▄▄<bbb><BBB>▄<AAA>▄<cbb><BBB>▄<aaa><AAA>▄▄<ccb><DCC>▄<BBA>▄<bba><BAA>▄<cbb><CBB>▄<DCB>▄<bba><CCB>▄<aaa><BAA>▄<AAA>▄▄▄▄▄▄<aab><BBB>▄<bbb>▄<aab>▄<aaa><AAA>▄▄▄▄
+#var image[7] <aaa><AAA>▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄<bba><BBA>▄<ccc><CCB>▄<ccb><CBB>▄<ddc><CCB>▄<edd><CBB>▄<edc><CCB>▄<ddc><DCB>▄<ccb><CBB>▄<aaa><BBA>▄<AAA>▄▄▄▄▄▄▄▄▄<abb><AAB>▄<bbb><BBB>▄<aaa><AAA>▄▄▄▄▄
+#var image[8] <aaa><AAA>▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄<bbb><BBB>▄<ccc><CCC>▄<edd><DDC>▄<fee><EDD>▄<eed><EED>▄<edd>▄<eed><EDD>▄<ddc><DCB>▄<bbb><BBA>▄<aaa><AAA>▄▄▄▄▄▄▄▄▄<bbb><BBB>▄<aaa><AAB>▄<AAA>▄▄▄▄▄
+#var image[9] <aaa><AAA>▄▄▄▄▄<aab>▄<aaa>▄▄▄▄▄▄▄▄<bba>▄<aaa><BBB>▄<cbb><DDC>▄<dcc><EED>▄<ddd><FEE>▄<edd>▄<EED>▄<ddc>▄<ccb><DDC>▄<bba><BBB>▄<aaa><AAA>▄<bba>▄<BAA>▄<aaa><AAA>▄▄▄▄▄▄<bbb><BBB>▄<aaa><AAA>▄▄▄▄▄▄
+#var image[10] <aaa><AAA>▄▄▄▄▄▄<bbb>▄<aaa>▄▄▄▄▄<BAA>▄<bba><BBA>▄<BAA>▄<aaa><BBA>▄<BAA>▄<cbb><CCB>▄<ccb><DDD>▄<dcb><EDD>▄<DDC>▄<cba><DCB>▄<bba><BBA>▄<bbb>▄<bba><AAA>▄<baa><BBB>▄<aaa><AAA>▄▄▄▄▄▄<bbb><BBB>▄▄<aaa><AAA>▄▄▄▄▄▄
+#var image[11] <aaa><AAA>▄▄▄▄▄▄<bbb><BBB>▄<aaa><AAA>▄▄▄▄▄▄▄<BBA>▄<baa><CBB>▄<cbb><BBB>▄<dcc>▄<edd><CBB>▄▄<CCB>▄<edc><DCB>▄<cbb><DCC>▄<aaa><CCB>▄<BAA>▄<AAA>▄▄▄▄▄▄▄<ccc><BBB>▄<bbb>▄<aaa><AAA>▄▄▄▄▄▄
+#var image[12] <aaa><AAA>▄▄▄▄▄<bbb>▄<ccc><BBC>▄<aaa><AAA>▄▄▄▄▄▄▄▄▄▄<BBA>▄<CCB>▄▄▄<BBA>▄<AAA>▄▄▄▄▄▄▄▄<bbb><AAB>▄<aaa><AAA>▄<ccc><CCC>▄<bbb><BBB>▄<aaa><AAA>▄<aab>▄<aaa>▄▄▄▄

@@ -1,0 +1,18 @@
+#nop -- Highlights and Substitutions
+#nop -- vim: syntax=tt
+
+#class {readability} {kill}
+#class {readability} {open}
+
+
+#nop -- Highlight directions
+
+#highlight {North - %1} {green}
+#highlight {South - %1} {yellow}
+#highlight {Up    - %1} {white}
+#highlight {West  - %1} {magenta}
+#highlight {East  - %1} {cyan}
+
+
+
+#class {readability} {close}

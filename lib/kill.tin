@@ -1,0 +1,131 @@
+#nop -- autokill!
+
+
+#class {autokill} {kill}
+#class {autokill} {open}
+
+#var mobKW[A generic guy is resting here.] {generic};
+#var mobPR[A generic guy is resting here.] {3};
+
+#class {autokill} {read} {$ttd/db/mob.db}
+
+#class {autokill} {close}
+
+#class {killer} {kill}
+#class {killer} {open}
+
+#list {roomMobs} {create}
+
+#var mobCap {off};
+
+#nop -- ---------------------------------------------------------------
+#nop -- Actions
+#nop -- ---------------------------------------------------------------
+
+#nop -- Capture mob descriptions
+#action {~^{(\e\[[0-9;]+m)?}\e[32m\e[33m%3} {
+    #if { $lookingAtRoom } {
+        #list roomMobs clear;
+        #event {RECEIVED LINE} {autoMobAdd %%1};
+        autoMobAdd %3;
+        #var mobCap {on};
+    };
+} {6}
+
+#nop -- Turn off capture
+event_register {blankline} {endMobCapture} {endMobCapture}
+#alias {endMobCapture} {
+  #if {"$mobCap" == "on"} {
+    #unevent {RECEIVED LINE};
+    #var mobCap {off};
+  };
+  #nop %0;
+}
+
+
+#nop -- ---------------------------------------------------------------
+#nop -- Helpful aliases
+#nop -- ---------------------------------------------------------------
+
+#alias {autoMobAdd} {
+  #var _cleanML @CF{%0};
+  #list roomMobs {add} {$_cleanML};
+  #if {&mobKW[$_cleanML]} {
+    #if {$mobPR[$_cleanML] == 3} { seenMobs $mobKW[$_cleanML] };
+    #elseif {$mobPR[$_cleanML] == 2} { seenMobsPriority $mobKW[$_cleanML] };
+  };
+}
+
+#tab killShow
+#alias {killShow} {
+  #if {&roomMobs[] > 0} {
+      #echo {Mobs in the Room};
+      #echo {----------------------------------------------------------};
+      #loop {1} {&roomMobs[]} {_tmp} {
+        #if {&mobKW[$roomMobs[$_tmp]]} {
+            #var _kw {$mobKW[$roomMobs[$_tmp]]};
+        } { #var _kw {---}};
+        #format {mobLine} {[%+2s] %.42s (%s) (%d)}
+            {$_tmp} {$roomMobs[$_tmp]} {$_kw}
+            {$mobPR[$roomMobs[$_tmp]]};
+        #echo {$mobLine}
+      }
+  } { #echo {There are no mobs in the room.};#cr}
+}
+
+#alias {zm %1 %2 %3} {
+  #var mobKW[$roomMobs[%1]] {%2};
+  #var mobPR[$roomMobs[%1]] {%3};
+
+  #var _long $roomMobs[%1];
+
+  #class {autokill} {write} {$ttd/db/mob.db}
+}
+
+#alias zz {
+  #if { &seenMobsPriority[] > 0 } {
+      vAttack $seenMobsPriority[1];
+      #list seenMobsPriority delete 1;
+  } {
+      vAttack $seenMobs[1];
+      #list seenMobs delete 1;
+  };
+}
+
+#nop -- Let's switch up the attack types
+#alias vAttack {
+
+  #switch {1d4} {
+    #case 1 kick %1;
+    #case 2 #if {$curLevel[$name] > 4} {kill %1} {kill %1};
+    #default kill %1}
+
+}
+
+
+#mac {\eOQ} zz
+
+#nop -- ---------------------------------------------------------------
+#nop -- Support functions
+#nop -- ---------------------------------------------------------------
+
+#nop -- Strip color codes and parentheticals from the end of lines
+#function {CF} {#var result {%1};
+  #replace {result} {{ \(.*}} {};
+  #replace {result} { {\e.*}} {};
+}
+
+#function nextMob {
+  #var result {<bbb>no mobs};
+  #if { &seenMobsPriority[] > 0 } {
+	#var result {<faa>$seenMobsPriority[1]};
+  };
+  #elseif { &seenMobs[] > 0 } {
+    #var result {<ddd>$seenMobs[1]};
+  };
+}
+
+
+#class {killer} {close}
+
+#nop -- vim:syntax=tt

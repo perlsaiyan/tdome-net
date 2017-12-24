@@ -1,0 +1,187 @@
+#nop -- Experience counter
+#nop -- vim: syntax=tt
+
+#class exp {kill}
+#class exp {open}
+
+global {xpRate[$name]} {0};
+global {minsToLevel[$name]} {0};
+global {curLevel[$name]} {0};
+global {exp[$name]} {0};
+
+#list image_list {add}
+  {cross.txt}
+  {fire_skull2.txt}
+  {fire_skull.txt}
+  {woman_chained.txt}
+  {skull_cloak.txt};
+
+#read $images/grass_tomb.txt;
+
+#format expStartTime {%T};
+#var expTotal 0;
+
+#nop -- We need to stop focusing on XP to level
+#nop -- and refocus on total XP, and just do math
+#nop -- from there.
+
+#alias recalcXPRate {
+  #var newXP %1;
+  #math expTotal { $expTotal + $newXP };
+  #math newCurXP { $curXP[$name] + $newXP};
+  #math expElapsedTime {@getEpoch{} - $expStartTime};
+  #math expPerSec {$expTotal/$expElapsedTime};
+  #math expTemp {$exp[$name] - $newXP};
+  #all #var exp[$name] $expTemp;
+  #math expMins { $exp[$name] / $expPerSec / 60};
+  global {xpRate[$name]} $expPerSec;
+  global {minsToLevel[$name]} $expMins;
+  global {curXP[$name]} {$newCurXP}
+}
+
+#alias ripCounter {
+  #if {@timeSinceLastKill < 1} {
+      #format mob {%l} {%1};
+      #math {gains[$mob][exp]} {$gains[$mob][exp] + $lastExpEarned};
+      #math {gains[$mob][cnt]} {$gains[$mob][cnt] + 1};
+
+      #if {$curLevel[$name] < 30} {
+        #showme <ffb>%1 killed | $lastExpEarned XP: $expPerSec XP/sec ($exp[$name] to level, $minsToLevel[$name] minutes).;
+      } {
+        #showme <ffb>%1 killed | $lastExpEarned XP: $expPerSec XP/sec (@xpNeededToRemort{} to remort).;
+      };
+  };
+}
+
+
+#tab expReset
+#alias {expReset} {
+  #format expStartTime {%T};
+  #var expTotal 0;
+}
+
+#act {^[ Remorts:%1%d ] [ Deaths:%3%d ] [ Experience: %5%d ]} {
+  global {curRM[$name]} {%2};
+  global {curXP[$name]} {%6};
+}
+
+#act {[ Level: %1 ] [} {global {curLevel[$name]} %1;}
+
+#nop -- #gag {%1's pitiful death cry assaults your ears!}
+#act {%1's pitiful death cry assaults your ears!} {
+   event_raise mobKill fleshy {%1};
+   #var lastExpEarned 0;
+   #var lastMobKilled {};
+}
+#nop -- #gag {You hear %1's last scream for mercy!}
+#act {You hear %1's last scream for mercy!} {
+   event_raise mobKill fleshy {%1};
+   #var lastExpEarned 0;
+   #var lastMobKilled {};
+}
+
+#nop -- #gag {The stench of burnt metal lingers in the air.}
+#act {The stench of burnt metal lingers in the air.} {
+   event_raise mobKill robot {$lastMobKilled};
+   #var lastExpEarned 0;
+   #var lastMobKilled {};
+}
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Actions and Triggers
+#nop -- ---------------------------------------------------------------------
+
+#act {%1 has been destroyed!} { #var lastMobKilled %1;}
+#nop -- #gag {%1 has been destroyed!}
+#act {You receive %1 experience points for the kill.} {
+  #var lastExpEarned %1;
+  #var lastKillTime @getEpoch{};
+  recalcXPRate $lastExpEarned;
+  }
+#gag {You receive %1 experience points for the kill.}
+
+#nop -- Melee XP;
+#act {^Your %1 ROCKS THE HELL OUT OF} { recalcXPRate 200; };
+
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Events
+#nop -- ---------------------------------------------------------------------
+event_register mobKill zripCounter {ripCounter {%3}}
+event_register mobKill looting { #if { @timeSinceLastKill{} < 1 } {lootCorpse {%2}} { #showme <cfc>NOT LOOTING, NOT MY KILL;} }
+event_register mobKill pilfer { #if { @timeSinceLastKill{} < 1 } {pilferCorpse {%2}} }
+event_register mobKill xdevour { #if { @timeSinceLastKill{} < 1 } {devourCorpse {%2}} }
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Aliases and Commands
+#nop -- ---------------------------------------------------------------------
+
+#alias {rip}
+{
+  #unvar {gains[final]};
+  #var ripMaxXP 0;
+  #var ripMaxCount 0;
+
+  #math {imageIndex} {1d&image_list[]};
+  #unvar image;
+  #read $images/$image_list[$imageIndex];
+
+  #foreach {$gains[]} {tempMob} {
+    #math gains[final][exp] $gains[final][exp] + $gains[$tempMob][exp];
+    #math gains[final][cnt] $gains[final][cnt] + $gains[$tempMob][cnt];
+    #if {$gains[$tempMob][exp] > $ripMaxXP} {
+      #var ripMaxXP $gains[$tempMob][exp];
+      #var ripMaxXPMob $tempMob;
+    };
+    #if {$gains[$tempMob][cnt] > $ripMaxCount} {
+      #var ripMaxCount $gains[$tempMob][cnt];
+      #var ripMaxCountMob $tempMob;
+    };
+  };
+
+  #math tmp {$gains[final][exp] / $gains[final][cnt]};
+  #format {ripAvgXPPerMob} {%G} {$tmp};
+  #format {ripTotalXP} {%G} {$gains[final][exp]};
+  #format {ripFinalCount} {%G} {$gains[final][cnt]};
+
+  #config wordwrap off;
+  #showme { $image[1]<AAA><cca> Most Frequently Killed Mob: $ripMaxCountMob ($ripMaxCount)};
+  #showme { $image[2]<AAA><cca>             Highest XP Mob: $ripMaxXPMob ($ripMaxXP)};
+  #showme { $image[3]<AAA><cca>             Average XP/mob: $ripAvgXPPerMob};
+  #showme { $image[4]<AAA><cca>                   Total XP: $ripTotalXP};
+  #showme { $image[5]<AAA><cca>          Total Mobs killed: $ripFinalCount};
+  #loop {6} {&image[]} {tmpLoop} {
+    #showme { $image[$tmpLoop]};
+  };
+  #config wordwrap on;
+}
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Functions make code cleaner
+#nop -- ---------------------------------------------------------------------
+#function Remorts { #var result $curRM[$name] }
+#function HP { #var result $curHP[$name] }
+#function Mana { #var result $curMA[$name] }
+#function Move { #var result $curMV[$name] }
+#function XP { #var result $curXP[$name] }
+#function xpNeededToRemort {
+  #if { ( @xpToRemort{} - @XP{}) > 0} {
+    #math result { @xpToRemort{} - @XP{} }
+  } { #var result 0 };
+}
+
+#function timeSinceLastKill { #math result {@getEpoch{} - $lastKillTime}; }
+
+#function xpToRemort {
+  #if     { @Remorts{} < 50 } { #var result 15000000};
+  #elseif { @Remorts{} < 75 } { #var result 25000000};
+  #elseif { @Remorts{} < 100} { #var result 30000000};
+  #elseif { @Remorts{} < 150} { #var result 35000000};
+  #elseif { @Remorts{} < 200} { #var result 40000000};
+  #elseif { @Remorts{} < 250} { #var result 45000000};
+  #elseif { @Remorts{} < 300} { #var result 50000000};
+  #elseif { @Remorts{} < 400} { #var result 55000000};
+  #else                     { #var result 60000000}
+}
+
+#class exp {close}

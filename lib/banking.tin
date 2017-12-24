@@ -1,0 +1,37 @@
+#nop -- Banking tools
+#nop -- vim: syntax=tt
+
+#class {bank} {kill}
+#class {bank} {open}
+
+#tab loadBanking
+#alias loadBanking {#read $ttd/banking.tin}
+
+
+#action {^Your current balance is %0 credits.} {#all #var bal[$name] %0 } {7}
+#action {[ Credits:        $%3 ]} {#all #var cash[$name] %3} {7}
+
+#alias {cash2bhang} {#all doCashBhang; }; 
+
+#alias {doCashBhang} {#if { "$name" != "bhang" } { give $cash[$name] credits bhang; }}
+
+#tab rebalanceCash
+#alias rebalanceCash {
+
+ #all bal;
+ #all #delay {1} {emptyBank};
+ #delay {2} {asc};
+ #delay {3} {cash2bhang};
+ #bh #delay {4} {sc};
+ #delay {5} {bankerSplit};
+ #delay {6} {asc};
+ #all #delay {7} {depAll};
+ #all #delay {8} {bal;score};
+ #delay {9} {status}
+}
+
+#alias emptyBank { wit $bal[$name] }
+#alias depAll { dep $cash[$name] }
+#alias bankerSplit { #bh split $cash[bhang] }
+
+#class {bank} {close}

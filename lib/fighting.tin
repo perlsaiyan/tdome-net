@@ -1,0 +1,60 @@
+#nop -- Fighting codes
+#nop -- vim: syntax=tt
+
+#class {fighting} {kill}
+#class {fighting} {open}
+
+#var curTarget {};
+
+#var _healthStatus[is in excellent condition.] 100;
+#var _healthStatus[has a few scratches.] 84;
+#var _healthStatus[has some small wounds and bruises.] 70;
+#var _healthStatus[has quite a few wounds.] 56;
+#var _healthStatus[has a lot of big nasty wounds.] 42;
+#var _healthStatus[is in really bad shape.] 28;
+#var _healthStatus[is in awful condition.] 14;
+#var _healthStatus[is bleeding awfully from big wounds.] 0;
+#var _healthStatus[is in like-new condition.] 100;
+#var _healthStatus[has some dents.] 70;
+#var _healthStatus[is beginning to smoke.] 56;
+#var _healthStatus[has a lot of large dents and is dripping fluid.] 42
+#var _healthStatus[looks very beat up.] 28;
+#var _healthStatus[is making loud clanking noises... black smoke too.] 14;
+
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Actions
+#nop -- ---------------------------------------------------------------------
+
+#action {^Diagnose who?} {
+  global curTarget {};
+  global curTargetHealth 0;
+}
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Set up fighting stuff, call this at the end of registering players
+#nop -- Be sure to make all players run this
+#nop -- ---------------------------------------------------------------------
+
+#tab fightingTimers;
+#alias {fightingTimers} {
+  #list {registeredPlayers} {find} {$name} {diagnoseOffset};
+  #delay {$diagnoseOffset} {
+    #tick {diagnose} {
+      #if {"$cursession" != "$sessionname"} {dia};
+    } {&registeredPlayers[]};
+  };
+}
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Programmatically load all our actions for setting mob status
+#nop -- ---------------------------------------------------------------------
+
+#foreach {${_healthStatus}[]} {key} {
+  #line substitute variables {#action {^%1 $key} {
+    global curTarget {%1};
+    global curTargetHealth {${_healthStatus}[$key]};
+  }
+  }
+}
+#class {fighting} {close};

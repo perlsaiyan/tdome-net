@@ -1,0 +1,3 @@
+db/*.db
+utils/stock-advisor
+lib/autoStock.tin

@@ -1,0 +1,142 @@
+#nop -- Time stuff, count bufs, count ticks, etc.
+#nop -- vim:syntax=tt
+
+#class {time} {kill}
+#class {time} {open}
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Variables
+#nop -- ---------------------------------------------------------------------
+
+#var tickLast @getEpoch{}; #nop -- Let's start with current time
+#var tickValue 40;         #nop -- Length of ticks
+#var tickWarning 35;       #nop -- seconds into tick for warning
+#var tickCalibrated 0;     #nop -- is our ticker Calibrated?
+#var mudTime 0;            #nop -- Set MUD time to start
+#var mudTimeCalibrated 0;  #nop -- is our mudTime Calibrated?
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Timers
+#nop -- ---------------------------------------------------------------------
+
+#nop -- Set our actual ticks (we'll calibrate at next tick we notice)
+#tick {tick} {tickEvent} {$tickValue}
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Aliases
+#nop -- ---------------------------------------------------------------------
+
+#nop -- Occurs on ticks, set our tick counter, check sanity on tick length
+#nop -- I believe ticks to be 40s, but that could change
+#alias tickEvent {
+  #math tickLength {@getEpoch{} - $tickLast};
+  timeSetTick;
+
+  #nop -- prevent duplicate ticks from ratcheting up the clock;
+  #if { $tickLength > 5 } {
+      #math mudTime {$mudTime + 1};
+      #math mudTime {$mudTime % 24};
+
+      #nop -- If we think we're calibrated, check variances;
+      #nop -- also set warning.;
+      #if {$tickCalibrated > 0} {
+          #showme <afa>TICK!!!!;
+          #math {tickMath} {$tickLength % $tickValue};
+          #if {$tickMath != 0} {#showme <afa>Apparent tick variance: $tickMath};
+          #delay {tickwarning} {#echo {<afa>-== TICK IN 5 seconds ==-}} {$tickWarning};
+      } {
+          #showme <cfc>TICK (uncalibrated)!!!!;
+      };
+  }
+  #nop -- do nothing with %0, passed in by event_raise;
+}
+
+#nop -- Set the last tick time, update/calibrate the ticker to notify user
+#alias timeSetTick {
+  global {tickLast} {@getEpoch{}};
+}
+
+#nop -- mark ticks as calibrated, schedule immediate tick
+#alias tickCalibrate {
+  #var {tickCalibrated} {@getEpoch{}};
+  #all #tick {tick} { tickEvent; } {$tickValue};
+  event_raise tick;
+  #if { "%1" != "" } {global {mudTime} {%1} };
+  #showme <afa>⌚ \
+}
+
+#nop -- check a Clock, but only if we should
+#alias checkClock {
+  #if { $mudTimeCalibrated == 0 } {
+    time
+  }
+}
+
+#alias setClock {
+  #var tmpHour %1;
+  #var tmpMeridian %2;
+
+  #if { ( "$tmpMeridian" == "pm" ) && ( $tmpHour < 12 ) } {
+    #math tmpHour {$tmpHour + 12};
+  };
+
+  #var mudTime $tmpHour;
+  #var mudTimeCalibrated 1;
+}
+
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Actions/Triggers to "calibrate" the tick counter and clock
+#nop --   We can use anything here, and should use as much stuff as
+#nop -- possible, to help keep our clocks in line.  Only use things
+#nop -- that truly happen on ticks, though.
+#nop -- ---------------------------------------------------------------------
+
+#nop -- These we can use to set the time
+#action {^Stars twinkle overhead.} {tickCalibrate 1}
+#action {^The sun rises in the east.} {tickCalibrate 5}
+#action {^The day has begun.} {tickCalibrate 6}
+#action {^The sun beams down directly overhead.} {tickCalibrate 12}
+#action {^The sky is filled with purple and orange as the sun sits over the horizon.} {tickCalibrate 18}
+#action {^The sun slowly disappears in the west.} {tickCalibrate 20}
+#action {^The night has begun.} {tickCalibrate 21}
+#action {^A shooting star streaks across the night sky.} {tickCalibrate 23}
+
+#nop -- These events just mark ticks
+#action {^It starts to rain.} {tickCalibrate}
+#action {^Lightning starts to show in the sky.} {tickCalibrate}
+#action {^The {rain|lightning} stops.} {tickCalibrate}
+#action {^The clouds disappear.} {tickCalibrate}
+#action {^The sky starts to get cloudy.} {tickCalibrate}
+#action {^There is a small puff of smoke as the corpse of %1 decays.} {tickCalibrate}
+#action {^%1 looks like %2 has a headache.} {tickCalibrate}
+#action {^%1's muscles no longer look so impressive.} {tickCalibrate}
+#action {^The Room of Refuge has moved!} {tickCalibrate}
+
+#nop -- These are clocks
+#action {^A digital clock flashes along the side of the Palace.} {checkClock}
+#action {^A large clock towers over the square.} {checkClock}
+
+#nop -- This is how time is presented to us
+#action {^{A digital clock|The clock tower} reads: %d o'clock %w,} {setClock %2 %3};
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Funtions for convenience, to get epoch time and secs since last tick
+#nop -- ---------------------------------------------------------------------
+
+#function getEpoch {#format result {%T}}
+#function secsInTick {#math result {@getEpoch{} - $tickLast}}
+#function secsLeftInTick {#if {$tickCalibrated < 1} {#var result XX} {#math result {$tickValue - @secsInTick{}}}}
+#function tickColor {#if {$tickCalibrated > 0} {#var result {<afa>}} {#var result {<cfc>}}}
+#function clockColor {#if {$mudTimeCalibrated > 0} {#var result {<afa>}} {#var result {<efe>}}}
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Events we need to register
+#nop -- ---------------------------------------------------------------------
+
+event_register {tick} {tickEvent} {tickEvent};
+
+
+
+
+#class {time} {close}

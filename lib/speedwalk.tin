@@ -1,0 +1,62 @@
+#nop -- Speedwalks file
+#nop -- vim: syntax=tt
+
+#tab LoadSpeedWalks
+#alias {LoadSpeedWalks} {#read $ttd/speedwalk.tin}
+
+#class {speedwalk} {kill}
+#class {speedwalk} {open}
+
+#var {GroundZero} {Ground Zero -}
+#var {HSBridge} {A high stone bridge -}
+#var {NVCenter} {The village center -}
+#var {Bunker} {Grand Hall of the keep}
+#var {MickeysHouse} {Inside a large log house}
+#var {JackerHQTek} {Tek Angeles HQ -}
+
+#tab GroundZeroToCavefish
+#alias {GroundZeroToCavefish} {18n9e;open smooth;d2e2n2e2n3u2en3e2sw6s}
+
+#tab GroundZeroToMickey
+#alias {GroundZeroToMickey} {checkMove {$GroundZero} {5n2en4e5nu}}
+
+#tab NVToPirates
+#alias {NVToPirates} {checkMove {$NVCenter} {2n;open gate;n;close gate;5ne4n3en4e}}
+
+#tab BridgeToKT
+#alias {BridgeToKT} {checkMove {$HSBridge} {ws2w4nsu}}
+
+#tab BunkerToGroundZero
+#alias {BunkerToGroundZero} {checkMove {$Bunker} {uw;4n;9w;9n}}
+
+#tab MickeyToHoard
+#alias {MickeyToHoard} {checkMove {$MickeysHouse} {dne6n2es2enene3n}}
+
+#tab BunkerToIronClaw
+#alias {BunkerToIronClaw} {checkMove {$Bunker} {u2se2sus3en3en3e}}
+
+#tab BunkerToEvan
+#alias {BunkerToEvan} {checkMove {$Bunker} {uws9w5s7w3s6e3nese2nenen2eue}}
+
+#tab HQtoHHH
+#alias {HQtoHHH} {checkMove {$JackerHQTek} {touch 4;dd3n8w2nw6n9wnwn}}
+
+#tab HQtoIOG
+#alias {HQtoIOG} {checkMove {$JackerHQTek} {touch 4;dd7ses3e3se4swse}}
+
+#tab HQtoOCP
+#alias {HQtoOCP} {checkMove {$JackerHQTek} {touch 3;sws16e8s9e3s18es}}
+
+#alias {checkMove} {
+  #if {"$curRoom" != "%1"} { #showme <cfa>FAIL: START FROM %1!} {%2}
+}
+
+#alias {newtown} {s;e;s;s;w;s;w;s;s;s}
+
+#nop -- dirlist Courtesy of NBK :)
+#ALIAS {dirs} {#sys curl -s "http://www.tdome.net/dirs.txt" | sed -n '/Directions_%1/,/End_%1/p' | grep -v _}
+#ALIAS {dirslist} {
+  #sys curl -s "http://www.tdome.net/dirs.txt" | sed -n '/Directions_Start/,/Directions_End/p' | grep -v _}
+
+
+#class {speedwalk} {close}

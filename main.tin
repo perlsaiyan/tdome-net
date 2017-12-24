@@ -1,0 +1,74 @@
+#nop -- ---------------------------------------------------------------------
+#nop -- Default variables
+#nop -- ---------------------------------------------------------------------
+
+#var barchar {-}
+#var ttd /home/tom/git/tdome-net
+#var lib $ttd/lib
+#var zone $ttd/zone
+#var images $ttd/images
+#var db $ttd/db
+
+#nop -- Player Map and Initials ---------------------------------------------
+
+#var sessionMap[bhang] bh;
+#var playerInitial[bhang] B;
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Aliases
+#nop -- ---------------------------------------------------------------------
+
+#alias {global} {#all #var {%1} {%2}}
+
+#alias {sload} {
+
+    #if { "%1" == "" } {
+      #showme <cfa> Yes, but load who?
+    } {
+    #script {password} {/usr/bin/pass %1@tdome.net};
+    #event {SESSION CONNECTED} {
+        %1;$password[1];
+        #unvar {password};
+        1;1;
+        #read $ttd/players/%1.tin;
+        #read $lib/common.tin;
+        registerPlayers;
+        #$sessionMap[%1];
+        sc;
+        #unevent {SESSION CONNECTED};
+        };
+    #ses $sessionMap[%1] tdome.net 5555;
+    }
+}
+
+
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Events
+#nop -- ---------------------------------------------------------------------
+
+#event {PROGRAM START} {
+  sload bhang;
+}
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Run this at startup
+#nop -- ---------------------------------------------------------------------
+
+    #script {GIT_BRANCH} {cd $ttd && git symbolic-ref HEAD | cut -d"/" -f 3}
+    #script {TT_VERSION} {dpkg -l |grep tintin|awk {'print $3'}};
+    #split 2
+    #nop -- #system {cat $ttd/images/tdome_logo.txt | lolcat -F 0.6}
+    #system {/home/tom/go/bin/pixterm -s 2 $ttd/images/skull-fire.jpg};
+    #echo {\n\n
+<cfc>You are currently using git branch <ffa>$GIT_BRANCH[1]<cfc>.\n
+<cfc>Tintin version <fff>$TT_VERSION[1]<cfc>.\n\n
+    };
+    #system {sleep 2}
+
+#message {ACTION} {off}
+#message {TAB} {off}
+#message {ALIAS} {off}
+#message {VARIABLE} {off}
+
+#nop -- vim: syntax=tt

@@ -1,0 +1,267 @@
+#nop -- Looting
+#nop -- vim: syntax=tt
+
+#class looting {kill}
+#class looting {open}
+
+#var lootCredits 0;
+
+#var autoLoot {off}
+#if {"$name" == "bhang"} {#var autoLoot on}
+
+#var autoPilfer {off}
+#if {"$name" == "dez"} {#var autoPilfer on}
+
+#var autoDevour {off}
+#if {"$name" == "bhang"} {#var autoDevour on}
+
+#var autoScavenge {on}
+#if {"$name" == "bhang"} {#var autoScavenge off}
+
+#var autoSplit {off}
+
+#tab autoLoot
+#alias {autoLoot}
+{
+    #if {"%0" == "on"}
+    {
+        #if {"$autoLoot" != "on"}
+        {
+            #var autoLoot on;
+            #showme You are now looting.
+        };
+        #else
+        {
+            #showme You are already looting.
+        }
+    };
+    #elseif {"%0" == "off"}
+    {
+        #if {"$autoLoot" == "on"}
+        {
+            #var autoLoot off;
+            #showme You are no longer looting.
+        };
+        #else
+        {
+            #showme You are not looting.
+        }
+    };
+    #else
+    {
+        #showme Turn looting on or off (currently $autoLoot)?
+    }
+}
+
+#tab autoPilfer
+#alias {autoPilfer}
+{
+    #if {"%0" == "on"}
+    {
+        #if {"$autoPilfer" != "on"}
+        {
+            #var autoPilfer on;
+            #showme You are now pilfering.
+        };
+        #else
+        {
+            #showme You are already pilfering.
+        }
+    };
+    #elseif {"%0" == "off"}
+    {
+        #if {"$autoPilfer" == "on"}
+        {
+            #var autoPilfer off;
+            #showme You are no longer pilfering.
+        };
+        #else
+        {
+            #showme You are not pilfering.
+        }
+    };
+    #else
+    {
+        #showme Turn pilfering on or off (currently $autoPilfer)?
+    }
+}
+
+#tab autoDevour
+#alias {autoDevour}
+{
+    #if {"%0" == "on"}
+    {
+        #if {"$autoDevour" != "on"}
+        {
+            #var autoDevour on;
+            #showme You are now devouring.
+        };
+        #else
+        {
+            #showme You are already devouring.
+        }
+    };
+    #elseif {"%0" == "off"}
+    {
+        #if {"$autoDevour" == "on"}
+        {
+            #var autoDevour off;
+            #showme You are no longer devouring.
+        };
+        #else
+        {
+            #showme You are not devouring.
+        }
+    };
+    #else
+    {
+        #showme Turn devouring on or off (currently $autoDeviour)?
+    }
+}
+
+#tab autoScavenge
+#alias {autoScavenge}
+{
+    #if {"%0" == "on"}
+    {
+        #if {"$autoScavenge" != "on"}
+        {
+            #var autoScavenge on;
+            #showme You are now scavenging.
+        };
+        #else
+        {
+            #showme You are already scavenging.
+        }
+    };
+    #elseif {"%0" == "off"}
+    {
+        #if {"$autoScavenge" == "on"}
+        {
+            #var autoScavenge off;
+            #showme You are no longer scavenging.
+        };
+        #else
+        {
+            #showme You are not scavenging.
+        }
+    };
+    #else
+    {
+        #showme Turn scavenging on or off (currently $autoScavenge)?
+    }
+}
+
+#tab autoSplit
+#alias {autoSplit}
+{
+    #if {"%0" == "on"}
+    {
+        #if {"$autoSplit" != "on"}
+        {
+            #var autoSplit on;
+            #showme You will now split credits.
+        };
+        #else
+        {
+            #showme You are already splitting.
+        }
+    };
+    #elseif {"%0" == "off"}
+    {
+        #if {"$autoSplit" == "on"}
+        {
+            #var autoSplit off;
+            #showme You will no longer split credits.
+        };
+        #else
+        {
+            #showme You are not splitting.
+        }
+    };
+    #else
+    {
+        #showme Turn splitting on or off (currently $autoSplit)?
+    }
+}
+
+
+#alias {lootCorpse} {
+  #nop %0;
+  #if {"$autoLoot" == "on"} {
+    #if {"%1" == "fleshy" } {
+        get all all.corpse;
+    } {
+        get all all.remains;
+    }
+  } { #nop }
+}
+
+#alias {pilferCorpse} {
+  #if {"$autoPilfer" == "on"} {
+    #if {$curLevel[$name] > 13} {
+      #if {"%1" == "fleshy" } {
+        pilfer corpse
+      } {
+        pilfer remains
+      }
+    }
+   } {#nop}
+}
+
+#alias {devourCorpse} {
+  #if {"$autoDevour" == "on"} {
+    #if {$curLevel[$name] > 0} {
+      #if {"%1" == "fleshy" } {
+        devour corpse
+      }
+    }
+   } {#nop}
+}
+
+#nop -- Exits mean scavenge credits
+#nop -- We should probably turn this into an event
+#act {^Obvious exits:$} {
+  #if {"$autoScavenge" == "on"} {
+      #if {"$cashonground" == "1"} {
+        get all.credits;
+        #var cashonground 0
+      }
+  }
+}
+
+
+#nop -- Money on the ground
+#act {{(A few credits lie scattered here.|Several credits lie here.|A small packet of credits lies here.|A large packet of credits is lying here.|A load of credits is lying here.|A large heap of credits is lying here.|A huge mound of credits is lying here.|An enormous mountain of credits lies here.)}} {
+  #if { $lookingAtRoom } {
+    #delay {getMoney} {get all.credits} {.2}
+  };
+}
+
+
+#nop -- Shit we want to drop goes here
+#action {^You get a hunk of meat} {drop meat}
+#action {^You get an animal skin} {jDrop skin}
+#action {^You get a small chocolate chicken pot pie} {drop pie}
+#action {^You get a bottle of Full Sail} {drop sail}
+#action {^You get a bag of cheesy poofs} {drop poofs}
+#action {^You get a wooden splint} {drop splint}
+#action {^You get a rapid-fire cannon} {jDrop cannon}
+
+#nop -- Split on loot/pilfer
+#action {^There were %1 credits.} {
+  #if {"$autoSplit" == "on"} {
+      #math lootCredits {$lootCredits + %1};
+      #delay {splitCash} {split $lootCredits; #var lootCredits 0;} {.5};
+  };
+}
+
+#action {^...you found a hidden cache of %1 credits} {#if {"$autoSplit" == "on"} {split %1}}
+
+
+#alias jDrop {
+    #delay {drop-%1} {drop all.%1} {1}
+}
+
+
+#class looting {close}

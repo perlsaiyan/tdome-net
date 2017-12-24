@@ -1,0 +1,19 @@
+#nop -- Random Socials
+#nop -- vim: syntax=tt
+
+#class socials {kill}
+#class socials {open}
+
+#list socialsMutantList {add} {tenses up as bloody spikes stab outward from $hisher[$sex[$name]] scapulas.}
+#list socialsMutantList {add} {shakes $hisher[$sex[$name]] head... $HisHer[$sex[$name]] hair grows to an absurd length!}
+#list socialsMutantList {add} {smirks as $hisher[$sex[$name]] cuspids sharpen and extend downward into fangs.}
+
+
+#tab socialsMutant
+#alias socialsMutant {
+  #var dicesize &socialsMutantList[];
+  #math dice {1d$dicesize};
+  emote $socialsMutantList[$dice];
+}
+
+#class socials {close}

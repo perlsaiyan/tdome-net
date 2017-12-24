@@ -1,0 +1,79 @@
+#nop -- Communications
+#nop -- vim: syntax=tt
+
+#class {comms} {kill}
+#class {comms} {open}
+
+#var commsLine[1] {};
+#var commColors[gossip] {<bfb>};
+#var commColors[tele]   {<fbb>};
+#var commColors[gang]   {<def>};
+#format {screenwidth} {%C};
+
+#nop -- Change this to a list you lazy, lazy bastard
+#var commsIgnore[Richard] 1;
+#var commsIgnore[Beavis] 1;
+#var commsIgnore[Thundarr the Barbarian] 1;
+#var commsIgnore[Ice T] 1;
+#var commsIgnore[Butthead] 1;
+#var commsIgnore[Lag Man] 1;
+
+#var SOMEONE {Someone};
+
+#nop --#gag {%1 gossips, '%2};
+#action {%1 gossips, '%2} {
+  #if {&{$commsIgnore[%1]}} {#nop } {
+    globalCommsListAdd {gossip} {%1} {%2};
+  }
+};
+
+#nop -- #gag {%1 telepaths to you '%2};
+#action {%1 telepaths to you '%2} {
+  globalCommsListAdd {tele} {[$playerInitial[$name]] %1} {%2};
+};
+#nop -- #gag {%1 replies '%2};
+#action {%1 replies '%2} {
+  globalCommsListAdd {tele} {[$playerInitial[$name]]%1} {%2};
+};
+
+#action {^%1 gang-say{s|}, '%3} {
+  #var speaker %1;
+  #if {"$speaker" == "You"} {#var speaker @prettyName{}};
+  #if {&{$commsIgnore[%1]}} {#nop } {
+    globalCommsListAdd {gang} {$speaker} {%3};
+  }
+}
+
+#alias globalCommsListAdd {
+  #var tmpLast $commsLine[-1];
+  #var speaker {%2};
+  #var tmpColor $commColors[%1];
+  #var newComm {$tmpColor$speaker: %3};
+
+  #replace {newComm} {'$} {};
+  #if {"$newComm" == "$tmpLast" } { } {
+    #all #list commsLine add {$newComm};
+  }
+
+  #list commsLine size tmp;
+  #while  {$tmp > 4} {
+    #all #list commsLine delete 1;
+    #list commsLine size tmp;
+  }
+}
+
+#alias commsUpdate {
+#nop --  #loop {1} {5} {counter} { #showme {$commsLine[$counter]} {-$counter}};
+  #loop {1} {4} {counter} {
+    #echo {{<G05>%-${screenwidth}s<G00>} {-$counter}} {$commsLine[$counter]};
+  };
+}
+
+#tick {commsUpdate} {commsUpdate} {1};
+#alias globalListAdd {
+  #all #list %1 add {%2};
+}
+
+#event {SCREEN RESIZE} { #var screenwidth %0; #var screenheight %1;}
+
+#class {comms} {close}

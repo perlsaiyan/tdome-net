@@ -1,0 +1,194 @@
+#nop -- Virtual signposts
+#nop -- vim:syntax=tt
+
+#class {sign} {kill}
+#class {sign} {open}
+
+#nop each user should have a variable to where these files show up in their dropbox
+#nop make a variable in your main tintin file to match | #var signUser Murdoch
+#var dropboxPath[Murdoch] {/home/robarnes/Dropbox/NBK}
+#var dropboxPath[Mo] {/Users/bbarnes/dropbox/nbk}
+#var dropboxPath[Bhang] {/home/tom/Dropbox/NBK}
+#var dropboxPath[Juki] {/home/dave/Dropbox/NBK}
+#var dropboxPath[Clink] {/cygdrive/c/Users/Sporadic/Dropbox/NBK}
+
+
+#read $dropboxPath[$signUser]/hashing16.tin
+#read $dropboxPath[$signUser]/hashing24.tin
+#read $dropboxPath[$signUser]/signpost.data
+#nop later this tick can be longer, but for beginning it short, so signs don't get lost between users
+#tick {readSignDatabase} {#read $dropboxPath[$signUser]/signpost.data} {15}
+
+#var signsMax 5;
+
+
+#nop -----------------------------------------------------------------------
+#nop 16-bit hash room stuff (deprecated)
+#nop -----------------------------------------------------------------------
+
+#function getSignsByRoom {
+
+  #var result {<fab>};
+  #if {&signsInRoom[$curRoomSignKey16][] > 0} {
+    #forall {$signsInRoom[$curRoomSignKey16][%*]} {
+      #var tmpResult $result;
+      #format result {%sAn <faa><NBK><fab> sign reads, '%s' <baf><LEGACY><fab>\n} {$tmpResult} {&0}
+    };
+  };
+
+}
+
+#alias signUpgrade16 {
+  #if {&signsInRoom[$curRoomSignKey16][] > 0} {
+    #forall {$signsInRoom[$curRoomSignKey16][%*]} {
+      signAdd &0
+    };
+    #loop $signsMax 1 cnt { #if {&signsInRoom[$curRoomSignKey16][$cnt]} { signDelete16 $cnt; } }
+  };
+}
+
+#tab signDelete16
+#alias signDelete16 {
+
+  #list keyList create $signsInRoom[$curRoomSignKey16][];
+  #if {&signsInRoom[$curRoomSignKey16][$keyList[+%1]]} {
+    #unvar signsInRoom[$curRoomSignKey16][$keyList[+%1]];
+	signSave;
+    emote touches a sign which glows and then vanishes.
+  } {
+    #showme That sign doesn't exist here.
+  }
+}
+
+#nop -----------------------------------------------------------------------
+#nop 24-bit hash room stuff
+#nop -----------------------------------------------------------------------
+
+#function getSignsByRoom24 {
+
+  #var result {<fab>};
+  #if {&signsInRoom[$curRoomSignKey24][] > 0} {
+    #forall {$signsInRoom[$curRoomSignKey24][%*]} {
+      #var tmpResult $result;
+      #format result {%sAn <faa><NBK><fab> sign reads, '%s' <baf><LEGACY24><fab>\n} {$tmpResult} {&0}
+    };
+  };
+}
+
+#alias signUpgrade24 {
+  #if {&signsInRoom[$curRoomSignKey24][] > 0} {
+    #forall {$signsInRoom[$curRoomSignKey24][%*]} {
+      signAdd &0
+    };
+    #loop $signsMax 1 cnt { #if {&signsInRoom[$curRoomSignKey24][$cnt]} { signDelete24 $cnt; } }
+  };
+}
+
+#tab signDelete24
+#alias signDelete24 {
+
+  #list keyList create $signsInRoom[$curRoomSignKey24][];
+  #if {&signsInRoom[$curRoomSignKey24][$keyList[+%1]]} {
+    #unvar signsInRoom[$curRoomSignKey24][$keyList[+%1]];
+	signSave;
+    emote touches a sign which glows and then vanishes.
+  } {
+    #showme That sign doesn't exist here.
+  }
+}
+
+#nop -----------------------------------------------------------------------
+#nop 24-bit (bis) hash room stuff
+#nop -----------------------------------------------------------------------
+
+#function getSignsByRoom24bis {
+
+  #var result {<fab>};
+  #if {&signsInRoom[$curRoomSignKeyBis24][] > 0} {
+    #forall {$signsInRoom[$curRoomSignKeyBis24][%*]} {
+      #var tmpResult $result;
+      #format result {%sAn <faa><NBK><fab> sign reads, '%s'\n} {$tmpResult} {&0}
+    };
+  };
+
+}
+
+#tab signAdd
+#alias signAdd {
+
+  #var signsNewIndex 0;
+  #loop $signsMax 1 cnt { #if {!&signsInRoom[$curRoomSignKeyBis24][$cnt]} { #var signsNewIndex $cnt; } }
+
+  #if {$signsNewIndex == 0} {
+    #showme The maximum number of signs for this room has been reached.
+  } {
+    emote scribbles on a sign, and hammers it into the ground.;
+    #var signsInRoom[$curRoomSignKeyBis24][$signsNewIndex] {%0};
+	signSave
+};
+
+}
+
+
+#tab signDelete
+#alias signDelete {
+
+  #list keyList create $signsInRoom[$curRoomSignKeyBis24][];
+  #if {&signsInRoom[$curRoomSignKeyBis24][$keyList[+%1]]} {
+    #unvar signsInRoom[$curRoomSignKeyBis24][$keyList[+%1]];
+	signSave;
+    emote touches a sign which glows and then vanishes.
+  } {
+    #showme That sign doesn't exist here.
+  }
+}
+
+#tab signUpgrade
+#alias signUpgrade { signUpgrade16; signUpgrade24 }
+
+#nop -----------------------------------------------------------------------
+#nop Save/Load Routines
+#nop -----------------------------------------------------------------------
+
+#tab signSave
+#alias signSave {
+
+	#class {signpostDatabase} {write} {$dropboxPath[$signUser]/signpost.data}
+}
+
+#alias {roomCapture} {
+  #if {"%1" == "on"} {
+    #var roomDesc {};
+    #class {roomTemp} {open};
+     #action {%*} {roomGrab %%0} {9};
+     #action {^$} {roomCapture off;#echo {@getSignsByRoom24bis{}\};#var showSigns 0;};
+    #class {roomTemp} {close};
+  };
+  #if {"%1" == "off"} {
+    #var curRoomSignKey16 {@mkhash16{$curRoomKey $roomDesc}};
+    #var curRoomSignKey24 {@mkhash24{$curRoomKey $roomDesc}};
+    #var curRoomSignKeyBis24 {@roomTitleClean{$curRoom}|@mkhash24{$curRoomKey $roomDesc}};
+    #class {roomTemp} {kill};
+  };
+}
+
+#alias roomGrab { #var roomDesc {${roomDesc}%0};}
+
+#function roomTitleClean {
+  #var result %0;
+  #replace result { [{afternoon|daybreak|high-noon|mid-morning|nightfall|pre-dawn|the witching hour|twilight}]} {};
+}
+
+#nop -----------------------------------------------------------------------
+#nop Actions
+#nop -----------------------------------------------------------------------
+
+#nop Capture the room title, trigger description capture
+#action {NECK~\e[36m%1 [%2} {
+  #var curRoom %1;
+  #var curRoomKey @roomTitleClean{%1 [%2};
+  roomCapture on;
+  #var showSigns 1;
+} {5}
+
+#class {sign} {close}
