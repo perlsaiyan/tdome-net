@@ -61,6 +61,7 @@
     #nop -- #system {cat $ttd/images/tdome_logo.txt | lolcat -F 0.6}
     #system {/home/tom/go/bin/pixterm -s 2 $ttd/images/skull-fire.jpg};
     #echo {\n\n
+<fff>Let's play ThunderDome.
 <cfc>You are currently using git branch <ffa>$GIT_BRANCH[1]<cfc>.\n
 <cfc>Tintin version <fff>$TT_VERSION[1]<cfc>.\n\n
     };

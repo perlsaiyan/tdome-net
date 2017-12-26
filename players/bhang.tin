@@ -24,6 +24,11 @@
 #nop -- ---------------------------------------------------------------
 #ALIAS {dress}
 {
+    #if {$curLevel[$name] < 30} {
+        put gods hide;
+    } {
+        put inheritance hide;
+    };
     sidePack; put ${sidepack} ${mainpack};
     put advance $invpack;
     put all.gun ${mainpack};
