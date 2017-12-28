@@ -12,7 +12,9 @@
 #nop -- Player Map and Initials ---------------------------------------------
 
 #var sessionMap[bhang] bh;
+#var sessionMap[stasisbhang] st;
 #var playerInitial[bhang] B;
+#var playerInitial[stasisbhang] S;
 
 #nop -- ---------------------------------------------------------------------
 #nop -- Aliases
@@ -34,7 +36,7 @@
         #read $lib/common.tin;
         registerPlayers;
         #$sessionMap[%1];
-        sc;
+        bal; sc;
         #unevent {SESSION CONNECTED};
         };
     #ses $sessionMap[%1] tdome.net 5555;

@@ -1,0 +1,70 @@
+#nop -- Bhang's Configuration
+#nop -- vim: syntax=tt
+
+#class {stasisbhang} {kill}
+#class {stasisbhang} {open}
+
+#nop -- ---------------------------------------------------------------
+#nop -- Set up variables
+#nop -- ---------------------------------------------------------------
+#var {name} {stasisbhang};
+#var {sessionname} {st};
+#var sex[$name] male;
+#var class mutant;
+#var title {the Storage Bastard}
+
+#var {mainpack} {bestial}
+#var {sidepack} {guitar}
+#var {invpack} {incorporeal}
+
+
+
+#nop -- ---------------------------------------------------------------
+#nop -- Aliases
+#nop -- ---------------------------------------------------------------
+
+#nop -- ---------------------------------------------------------------
+#nop -- Actions/Triggers
+#nop -- Strongly consider moving this stuff elsewhere
+#nop -- Player config files should be as light as possible
+#nop -- ---------------------------------------------------------------
+#action {%1 gang-says, '%0Location?'} {] $curRoom}
+
+#nop -- ---------------------------------------------------------------
+#nop -- Equipment stuff
+#nop -- ---------------------------------------------------------------
+#nop -- Unique Slots
+#var {eqREXP[overshield]}           {a powerful drunken haze}
+#var {eqREXP[encircling body]}      {a mysterious tiki enchantment}
+#var {eqREXP[affixed to armor]}     {colossal blackened horns}
+#var {eqREXP[worn on body]}         {plasteel body armor}
+#var {eqREXP[worn on back]}         {worn road sign}
+#var {eqREXP[worn on head]}         {some antlers}
+#var {eqREXP[worn on face]}         {the faceplate of the Shrike}
+#var {eqREXP[worn on legs]}         {some ceramic leggings}
+#var {eqREXP[worn on feet]}         {flaming footwear}
+#var {eqREXP[worn on hands]}        {Gauntlets of Might}
+#var {eqREXP[worn on arms]}         {powered armgear}
+#var {eqREXP[worn about body]}      {a bestial hide}
+#var {eqREXP[worn about waist]}     {lightweight champion belt}
+#var {eqREXP[wielded]}              {Spada}
+#var {eqREXP[accessory]}            {190 Octane}
+#var {eqREXP[pierced cock]}         {a railroad spike}
+#var {eqREXP[pierced septum]}       {black-zirconium bolt}
+#var {eqREXP[pierced skull]}        {transdermal mohawk spikes}
+#var {eqREXP[pierced brow]}         {}
+#var {eqREXP[worn as shield]}       {a dorsalventral plate}
+
+#nop -- Multi Slots.  Take care editing this, separate items with |
+#var {eqREXP[worn on finger]}       {the Ring of Inheritance|Manowar|the Ring of the Gods}
+#var {eqREXP[worn around neck]}     {a scorched metal charm|a golden flame}
+#var {eqREXP[worn in ear]}          {a golden anchor earring}
+#var {eqREXP[worn around wrist]}    {a fascinus charm|a blitz bangle}
+
+
+
+#class {stasisbhang} {close}
+
+#nop -- ---------------------------------------------------------------
+#nop -- Tintin files we only want for this character
+#nop -- ---------------------------------------------------------------
