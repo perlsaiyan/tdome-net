@@ -30,6 +30,10 @@
   global {curCON[$name]} {%2};
   global {curKills[$name]} {%4};
   global {cash[$name]} {%7};
+  #format {conline} {[ <020>Con:<050> %+10s<070> ] [ <020>Kills:<050> %+8s<070> ] [ <020>Credits:<050> %+16s<070>] }
+    {$curCON[$name]} {$curKills[$name]} {$cash[$name] / @hNum{$bal[$name]} } ;
+  #echo ${conline};
+  #line gag;
 } {5}
 
 
@@ -273,6 +277,7 @@
 #read $lib/mapping.tin
 #read $lib/kill.tin
 #read $lib/inventory.tin
+#read $lib/math.tin
 
 #if { "$class" != "mutant" } {
    #read $lib/practice.tin;

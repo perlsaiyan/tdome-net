@@ -1,0 +1,29 @@
+#nop -- Math routine
+
+#class {math} {kill}
+#class {math} {open}
+
+
+#nop -- ---------------------------------------------------------------
+#nop -- Helpful functions
+#nop -- ---------------------------------------------------------------
+#function hNum {
+    #var _result %1;
+    #var _scale {};
+
+    #if {%1 > 1000000} {
+      #math _result {%1 / 1000000.0};
+      #var _scale {<dda>M};
+    };
+    #elseif {%1 > 1000 } {
+      #math _result {%1 / 1000.0};
+      #var _scale {<ada>K};
+    };
+
+    #var result {$_result$_scale};
+};
+
+#class {math} {close}
+
+#nop -- vim:syntax=tt
+
