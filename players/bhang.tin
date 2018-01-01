@@ -17,11 +17,21 @@
 #var {sidepack} {guitar}
 #var {invpack} {incorporeal}
 
-
+#nop -- #debug all;
 
 #nop -- ---------------------------------------------------------------
 #nop -- Aliases
 #nop -- ---------------------------------------------------------------
+
+#alias {_setup} {
+    #read $lib/common.tin;
+    #send bal;
+    #send sc;
+    #delay {2} {dress};
+    #unalias {_setup};
+}
+
+
 #ALIAS {dress}
 {
     #if {$curLevel[$name] < 30} {
@@ -39,6 +49,7 @@
     get $invpack $mainpack;
     wear all;
 }
+
 {5}
 #alias {sidePack} {
     put slaying ${sidepack};
@@ -132,4 +143,4 @@
 #nop -- ---------------------------------------------------------------
 #nop -- Tintin files we only want for this character
 #nop -- ---------------------------------------------------------------
-#read $lib/speedwalk.tin
+#read $lib/autoLogin.tin

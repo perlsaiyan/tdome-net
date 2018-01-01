@@ -27,19 +27,7 @@
     #if { "%1" == "" } {
       #showme <cfa> Yes, but load who?
     } {
-    #script {password} {/usr/bin/pass %1@tdome.net};
-    #event {SESSION CONNECTED} {
-        %1;$password[1];
-        #unvar {password};
-        1;1;
-        #read $ttd/players/%1.tin;
-        #read $lib/common.tin;
-        registerPlayers;
-        #$sessionMap[%1];
-        bal; sc;
-        #unevent {SESSION CONNECTED};
-        };
-    #ses $sessionMap[%1] tdome.net 5555;
+    #ses $sessionMap[%1] tdome.net 5555 {$ttd/players/%1.tin};
     }
 }
 

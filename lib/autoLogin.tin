@@ -1,0 +1,25 @@
+#nop Automatic login functions;
+
+#class {autologin} {kill}
+#class {autologin} {open}
+
+#action {What is your name? } {#send $name}
+
+#action {Password: } {
+    #script {password} {/usr/bin/pass $name@tdome.net};
+    #send $password[1];
+    #unvar password;
+}
+
+#action {*** PRESS RETURN:} {#cr};
+
+#action {Your choice: } {
+    #send 1;
+    _setup; #nop -- Run a custom setup command
+    #class {autologin} {kill}
+};
+
+
+#class {autologin} {close}
+
+#nop -- vim: syntax=tt
