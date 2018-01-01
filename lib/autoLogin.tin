@@ -1,22 +1,31 @@
 #nop Automatic login functions;
+#nop This module will log you into tdome using session-specific variables.
+#nop It uses the linux utility "pass" (debian package pass) to store credentials.
+#nop It also deletes the password variable after use to stop the haxxors.
 
 #class {autologin} {kill}
 #class {autologin} {open}
 
+
+#nop -- Login with username
 #action {What is your name? } {#send $name}
 
+#nop -- Login with password, grab from encrypted file
 #action {Password: } {
     #script {password} {/usr/bin/pass $name@tdome.net};
     #send $password[1];
     #unvar password;
 }
 
+#nop -- MOTD
 #action {*** PRESS RETURN:} {#cr};
 
+#nop -- main menu
 #action {Your choice: } {
     #send 1;
-    _setup; #nop -- Run a custom setup command
-    #class {autologin} {kill}
+    #nop -- Run a custom setup command (define this in player file);
+    _setup;
+    #class {autologin} {kill};
 };
 
 
