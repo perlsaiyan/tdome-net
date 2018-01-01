@@ -1,0 +1,51 @@
+#nop Automatic login functions;
+
+#class {cutscenes} {kill}
+#class {cutscenes} {open}
+
+#var sessionEndReason {death}
+#nop -- Pixterm is on github: https://github.com/eliukblau/pixterm
+#var pixterm {/home/tom/go/bin/pixterm -s 2 -tc $screenwidth -tr 50}
+
+#nop -- ---------------------------------------------------------------
+#nop -- Triggers / Actions
+#nop -- ---------------------------------------------------------------
+
+#action {^{Stasis Unit|Cherri} stores your belongings and helps you into your private chamber.} {
+  #var sessionEndReason {rent}
+}
+
+#action {^The Remorter telepaths to you, 'There you are, kid.'$} {
+    #system {$pixterm $images/remort/kid_warrior.jpg}
+    #echo {The Remorter telepaths to you, 'Now get out there and start whacking!'}
+}
+
+#nop -- ---------------------------------------------------------------
+#nop -- Events
+#nop -- ---------------------------------------------------------------
+
+#event {SESSION DISCONNECTED} {
+
+    #format {screenwidth} {%C};
+
+    #if { "$sessionEndReason" == "death" } {
+
+        #system {$pixterm $images/death/devil.jpg > /tmp/ram/cutscene};
+        #system {cat /tmp/ram/cutscene}
+        #echo {Better luck next time, Freejack.  You could hope it was a crash, I guess.};
+
+    };
+
+    #elseif { "$sessionEndReason" == "rent" } {
+
+        #system {$pixterm $images/rent/castle-moat.jpg > /tmp/ram/cutscene};
+        #system {cat /tmp/ram/cutscene};
+        #echo {Another day of adventuring draws to a close and you retire to your castle.};
+
+    };
+
+}
+
+#class {cutscenes} {close}
+
+#nop -- vim: syntax=tt

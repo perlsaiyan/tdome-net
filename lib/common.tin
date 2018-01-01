@@ -278,6 +278,7 @@
 #read $lib/kill.tin
 #read $lib/inventory.tin
 #read $lib/math.tin
+#read $lib/cutscenes.tin
 
 #if { "$class" != "mutant" } {
    #read $lib/practice.tin;
