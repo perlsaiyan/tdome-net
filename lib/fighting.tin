@@ -29,6 +29,7 @@
 #action {^Diagnose who?} {
   global curTarget {};
   global curTargetHealth 0;
+  #var ISFIGHTING {off};
 }
 
 #nop -- ---------------------------------------------------------------------
@@ -54,7 +55,19 @@
   #line substitute variables {#action {^%1 $key} {
     global curTarget {%1};
     global curTargetHealth {${_healthStatus}[$key]};
+    #var ISFIGHTING {on}
   }
   }
 }
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Events
+#nop -- ---------------------------------------------------------------------
+event_register {fighting} {checker} {#var ISFIGHTING {on} }
+
+#nop -- ---------------------------------------------------------------------
+#nop -- Timer
+#nop -- ---------------------------------------------------------------------
+#tick {checker} { #if { "$ISFIGHTING" == "on" } {dia} } {10}
+
 #class {fighting} {close};
