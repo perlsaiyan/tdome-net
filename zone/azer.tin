@@ -1,0 +1,13 @@
+#nop -- VSOF, Azer assist functions
+
+#class {zonehelp} {kill}
+#class {zonehelp} {open}
+
+#tab gotoArtificer
+#al gotoArtificer {#map run {The Orrery -|c24521}}
+#tab gotoBSS
+#al gotoBSS {#map run {Black Stone Steps -|6e3b70}}
+
+#class {zonehelp} {close}
+
+#nop -- vim: syntax=tt
