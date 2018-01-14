@@ -144,3 +144,4 @@
 #nop -- Tintin files we only want for this character
 #nop -- ---------------------------------------------------------------
 #read $lib/autoLogin.tin
+#read $lib/classes/mutant.tin

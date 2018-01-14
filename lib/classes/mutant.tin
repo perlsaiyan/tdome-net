@@ -1,0 +1,15 @@
+#nop -- VSOF; mutant routines
+
+#class {mutant} {kill}
+#class {mutant} {open}
+
+#nop -- Mutant functions
+#alias {scar} {#bh grow scar}
+#alias {claws} {#bh grow claws}
+#alias {shell} {#bh grow shell}
+#alias {fingers} {#bh grow fingers}
+#alias {body} {#bh grow body}
+#alias {dc} {#bh devour corpse}
+
+#class {mutant} {close}
+#nop -- vim: syntax=tt
