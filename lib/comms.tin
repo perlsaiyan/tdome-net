@@ -8,6 +8,8 @@
 #var commColors[gossip] {<bfb>};
 #var commColors[tele]   {<fbb>};
 #var commColors[gang]   {<def>};
+#var commColors[bj]     {<bcf>};
+
 #format {screenwidth} {%C};
 
 #nop -- Change this to a list you lazy, lazy bastard
@@ -41,6 +43,14 @@
   #if {"$speaker" == "You"} {#var speaker @prettyName{}};
   #if {&{$commsIgnore[%1]}} {#nop } {
     globalCommsListAdd {gang} {$speaker} {%3};
+  }
+}
+
+#action {^%1 bonejack{s|}, '%3} {
+  #var speaker %1;
+  #if {"$speaker" == "You"} {#var speaker @prettyName{}};
+  #if {&{$commsIgnore[%1]}} {#nop } {
+    globalCommsListAdd {bj} {$speaker} {%3};
   }
 }
 
