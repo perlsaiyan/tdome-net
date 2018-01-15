@@ -1,3 +1,5 @@
 db/*.db
 utils/stock-advisor
 lib/autoStock.tin
+lib/autoZone.tin
+lib/autozone/*
