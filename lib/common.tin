@@ -69,15 +69,6 @@
 #alias {showtank} {#all #showme <faa> Current tank is $tank}
 #alias {settank} {#all #var tank %1}
 
-#nop -- Mutant functions
-#alias {scar} {#bh grow scar}
-#alias {claws} {#bh grow claws}
-#alias {shell} {#bh grow shell}
-#alias {fingers} {#bh grow fingers}
-#alias {body} {#bh grow body}
-#alias {dc} {#bh devour corpse}
-#alias {hb}     {#bh headbutt %1} {5}
-
 #tab registerPlayers
 #alias {registerPlayers} {
     #all #list {registeredPlayers} {clear};
