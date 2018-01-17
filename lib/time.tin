@@ -84,6 +84,10 @@
   #var mudTimeCalibrated 1;
 }
 
+#alias setHours {
+  #var mudTime %1;
+  #var mudTimeCalibrated 1;
+}
 
 #nop -- ---------------------------------------------------------------------
 #nop -- Actions/Triggers to "calibrate" the tick counter and clock
@@ -119,6 +123,7 @@
 
 #nop -- This is how time is presented to us
 #action {^{A digital clock|The clock tower} reads: %d o'clock %w,} {setClock %2 %3};
+#action {^Your internal clock reads:%s%d00 hours.} {setHours %2};
 
 #nop -- ---------------------------------------------------------------------
 #nop -- Funtions for convenience, to get epoch time and secs since last tick
