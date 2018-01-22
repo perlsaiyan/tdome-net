@@ -12,6 +12,7 @@
 #var sex[$name] male;
 #var class mutant;
 #var title {the Welfare Mutant}
+#var mode NORM;
 
 #var {mainpack} {bestial}
 #var {sidepack} {guitar}
@@ -31,9 +32,22 @@
     #unalias {_setup};
 }
 
+#alias {dress} {dressMutant}
 
-#ALIAS {dress}
+#alias {dressCyborg} {
+  #if {$curLevel[$name] < 30} {
+    put gods $invpack;
+  } {
+    put inheritance $invpack;
+  };
+
+  wear all;wear all;
+  put all orb
+}
+
+#alias {dressMutant}
 {
+    time;
     #if {$curLevel[$name] < 30} {
         put gods hide;
     } {
@@ -48,25 +62,19 @@
     put all $mainpack;
     get $invpack $mainpack;
     wear all;
-}
-
-{5}
+} {5}
 #alias {sidePack} {
     put slaying ${sidepack};
     put all.talisman ${sidepack};
     put ball ${sidepack};
 }
 
-#alias gp {
-  grow shell;
-  grow claws;
-}
-
 #alias rs {
   #2 rem anchor;
-  rem ceramic;
+  #if {"$class" == "mutant"} {rem ceramic};
   sleep
-}
+};
+
 #alias rw {
   wake;
   stand;
@@ -75,27 +83,18 @@
 }
 
 #alias inher {
-  rem ${mainpack};
-  rem gods;
-  put gods ${mainpack};
-  get inheritance ${mainpack};
-  wear all;
+  rem gods;   put gods ${mainpack};
+  get inheritance ${mainpack}; wear inheritance;
 }
 #alias power {
-  rem $mainpack;
-  rem inheritance;
-  put inheritance $mainpack;
-  get gods $mainpack;
-  wear all;
+  rem inheritance;  put inheritance $invpack;
+  get gods $invpack;  wear gods;
 }
 
-#tab bank
 #alias {bank} {
-  rem ${mainpack};
-  get bank ${mainpack};
+  rem ${mainpack}; get bank ${mainpack};
   dep $cash[$name]; bal;
-  put bank ${mainpack};
-  wear ${mainpack};
+  put bank ${mainpack}; wear ${mainpack}
 }
 
 #nop -- ---------------------------------------------------------------
@@ -113,17 +112,22 @@
 #var {eqREXP[encircling body]}      {a mysterious tiki enchantment}
 #var {eqREXP[affixed to armor]}     {colossal blackened horns}
 #var {eqREXP[worn on body]}         {plasteel body armor}
+#nop -- #var {eqREXP[worn on body]}         {a powered plastic assault suit}
 #var {eqREXP[worn on back]}         {worn road sign}
+#nop -- #var {eqREXP[worn on back]}         {a plasma membrane}
 #var {eqREXP[worn on head]}         {some antlers}
 #var {eqREXP[worn on face]}         {the faceplate of the Shrike}
+#nop -- #var {eqREXP[worn on face]}         {large mechanical fangs}
 #var {eqREXP[worn on legs]}         {some ceramic leggings}
+#nop -- #var {eqREXP[worn on legs]}         {tarnished metal greaves}
 #var {eqREXP[worn on feet]}         {flaming footwear}
 #var {eqREXP[worn on hands]}        {Gauntlets of Might}
 #var {eqREXP[worn on arms]}         {powered armgear}
 #var {eqREXP[worn about body]}      {a bestial hide}
+#nop -- #var {eqREXP[worn about body]}      {a vaporous shroud}
 #var {eqREXP[worn about waist]}     {lightweight champion belt}
 #var {eqREXP[wielded]}              {Spada}
-#var {eqREXP[accessory]}            {190 Octane}
+#var {eqREXP[accessory]}            {flaming 190 Octane}
 #var {eqREXP[pierced cock]}         {a railroad spike}
 #var {eqREXP[pierced septum]}       {black-zirconium bolt}
 #var {eqREXP[pierced skull]}        {transdermal mohawk spikes}
@@ -133,6 +137,7 @@
 #nop -- Multi Slots.  Take care editing this, separate items with |
 #var {eqREXP[worn on finger]}       {the Ring of Inheritance|Manowar|the Ring of the Gods}
 #var {eqREXP[worn around neck]}     {a scorched metal charm|a golden flame}
+#nop -- #var {eqREXP[worn around neck]}     {a scorched metal charm|a dog tag}
 #var {eqREXP[worn in ear]}          {a golden anchor earring}
 #var {eqREXP[worn around wrist]}    {a fascinus charm|a blitz bangle}
 
