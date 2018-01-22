@@ -1,0 +1,29 @@
+#nop -- Idle mode, recovery, etc
+
+#class {mode} {kill}
+#class {mode} {open}
+
+#nop -- ---------------------------------------------------------------
+#nop -- Configuration variables
+#nop -- ---------------------------------------------------------------
+
+#var mode IDLE;
+
+
+#nop -- ---------------------------------------------------------------
+#nop -- Todo Stuff
+#nop -- ---------------------------------------------------------------
+
+#nop -- ⌚ Your claws shrink back into your fingers.
+#nop -- ⌚ Your scaly shell slowly shrinks back into your skin.
+#nop -- grow eld, body, fingers, brain
+#nop -- sleep
+#nop -- decide when to mission
+#nop -- decide when to sell
+
+
+
+
+#class {mode} {close}
+
+#nop -- vim: syntax=tt

@@ -42,6 +42,10 @@
 #alias {scan} {l n;l e; l s;l w;l u; l d}
 #alias {getWear} {get %1; wear %1}
 
+#alias {raid} {#read $lib/mode/raid.tin}
+#alias {norm} {#read $lib/mode/normal.tin}
+
+
 #var HisHer[male] {His};
 #var HisHer[female] {Her};
 #var hisher[male] {his};

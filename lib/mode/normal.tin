@@ -1,0 +1,29 @@
+#nop -- Normal mode for play
+
+#class {mode} {kill}
+#class {mode} {open}
+
+#nop -- ---------------------------------------------------------------
+#nop -- Configuration variables
+#nop -- ---------------------------------------------------------------
+autoDevour on
+autoLoot on
+autoSplit off
+
+auto shell on;
+auto claws on;
+auto body on;
+auto fingers on;
+auto eld on;
+
+#var mode NORM;
+
+
+#nop -- ---------------------------------------------------------------
+#nop -- Todo Stuff
+#nop -- ---------------------------------------------------------------
+
+
+#class {mode} {close}
+
+#nop -- vim: syntax=tt
