@@ -7,17 +7,11 @@
 #var lootCredits 0;
 
 #var autoLoot {off}
-#if {"$name" == "bhang"} {#var autoLoot on}
+#if {"$name" == "bhang"} {#var autoLoot on};
 
 #var autoPilfer {off}
-#if {"$name" == "dez"} {#var autoPilfer on}
-
 #var autoDevour {off}
-#if {"$name" == "bhang"} {#var autoDevour on}
-
 #var autoScavenge {on}
-#if {"$name" == "bhang"} {#var autoScavenge off}
-
 #var autoSplit {off}
 
 #tab autoLoot
@@ -115,7 +109,7 @@
     };
     #else
     {
-        #showme Turn devouring on or off (currently $autoDeviour)?
+        #showme Turn devouring on or off (currently $autoDevour)?
     }
 }
 
@@ -238,6 +232,10 @@
   };
 }
 
+#nop -- Let's pick up stuff
+#action {^A pitchfork with barbed tines lies here.} {get pitchfork} {2}
+#action {^A large bowtie of black leathery wings lies here, stirring feebly.} {get bowtie} {2}
+#action {^A translucent ghostly shroud lies here in a pool of pale light.} {get shroud} {2}
 
 #nop -- Shit we want to drop goes here
 #action {^You get a hunk of meat} {drop meat}
@@ -245,8 +243,10 @@
 #action {^You get a small chocolate chicken pot pie} {drop pie}
 #action {^You get a bottle of Full Sail} {drop sail}
 #action {^You get a bag of cheesy poofs} {drop poofs}
-#action {^You get a wooden splint} {drop splint}
-#action {^You get a rapid-fire cannon} {jDrop cannon}
+#action {^You get a wooden splint} {jDrop splint}
+#action {^You get a rapid-fire cannon} {drop cannon}
+#action {^You get a chunk of wood} {jDrop wood}
+#action {^You get a cigarette} {jDrop cigarette}
 
 #nop -- Split on loot/pilfer
 #action {^There were %1 credits.} {
