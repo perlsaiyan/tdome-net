@@ -122,7 +122,7 @@
 #action {^A large clock towers over the square.} {checkClock}
 
 #nop -- This is how time is presented to us
-#action {^{A digital clock|The clock tower} reads: %d o'clock %w,} {setClock %2 %3};
+#action {^{A Rolex watch|A digital clock|The clock tower} reads: %d o'clock %w,} {setClock %2 %3};
 #action {^Your internal clock reads:%s%d00 hours.} {setHours %2};
 
 #nop -- ---------------------------------------------------------------------
@@ -132,7 +132,7 @@
 #function getEpoch {#format result {%T}}
 #function secsInTick {#math result {@getEpoch{} - $tickLast}}
 #function secsLeftInTick {#if {$tickCalibrated < 1} {#var result XX} {#math result {$tickValue - @secsInTick{}}}}
-#function tickColor {#if {$tickCalibrated > 0} {#var result {<afa>}} {#var result {<cfc>}}}
+#function tickColor {#if {$tickCalibrated > 0} {#var result {<fff>}} {#var result {<ccc>}}}
 #function clockColor {#if {$mudTimeCalibrated > 0} {#var result {<afa>}} {#var result {<efe>}}}
 
 #nop -- ---------------------------------------------------------------------
