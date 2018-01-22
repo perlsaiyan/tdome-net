@@ -1,0 +1,10 @@
+#nop -- VSOF, cyborg routines
+
+#class {cyborg} {kill}
+#class {cyborg} {open}
+
+#nop -- Cyborg functions
+#alias {scar} {selfrepair}
+
+#class {cyborg} {close}
+#nop -- vim: syntax=tt
