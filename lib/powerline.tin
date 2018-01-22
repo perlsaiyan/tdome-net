@@ -1,0 +1,63 @@
+#nop -- VSOF, powerline stuff
+#nop Attempt to do powerline-y things
+
+
+#nop -- ---------------------------------------------------------------
+#nop -- Setup 
+#nop -- ---------------------------------------------------------------
+#var icon[lefttri] {}
+
+#nop -- ---------------------------------------------------------------
+#nop -- Functions
+#nop -- ---------------------------------------------------------------
+#func {invertColor} { #format result {%u} {%1} }
+
+#func {powerstatus} {
+
+  #format {result} {<ddd><AAB>%s <aab><ABA>$icon[lefttri]%s%+02s<099> %+02s:00 %s %+20s  %s 👾 %s}
+    {$mode}
+    {@tickColor{}} {@secsLeftInTick{}}
+    {@clockColor{}$mudTime}
+    {@OpponentHealthBarGraph{}}
+    {@OpponentName{}}
+    {$GIT_BRANCH[1]}
+    {@nextMob{}};
+}
+
+#nop -- return the powerline player status line for a given value
+#func {powerlinePlayer} {
+    #var _hpColor @GYRColor{ {$curHP[$name]} {$maxHP[$name]} };
+    #var _maColor @GYRColor{ {$curMA[$name]} {$maxMA[$name]} };
+    #var _mvColor @GYRColor{ {$curMV[$name]} {$maxMV[$name]} };
+
+    #format _plName {<BBC><fff>%+02s|%+05s %s$icon[lefttri]}
+        {$curLevel[$name]} {$name} {<bbc><AAA>};
+
+    #format _plHP {${_hpColor}%+04s<fff>H} {$curHP[$name]};
+    #format _plMA {${_maColor}%+04s<fff>M} {$curMA[$name]};
+    #format _plMV {${_mvColor}%+04s<fff>V} {$curMV[$name]};
+
+    #if {$curLevel[$name] < 30} {
+        #var tmpXP $exp[$name]
+    };
+    #elseif { @XP{} > @xpToRemort{} } {
+        #var tmpXP REMORT
+    };
+    #else {
+        #math tmpXP { @xpToRemort{} - @XP{} };
+    };
+
+    #format width {%C};
+    #var result {${_plName}${_plHP}${_plMA}${_plMV} <fff>| ${tmpXP} | ${xpRate[$name]} | $statusLine[$name]};
+    #format result {%.${width}s} {$result};
+}
+
+#nop -- ---------------------------------------------------------------
+#nop -- Tickers
+#nop -- ---------------------------------------------------------------
+#tick {statusBar} { #showme {@powerstatus{}} {$statRowsBottom}} {.3}
+#nop -- This is temporary garbage
+#tick {playerBar} { #showme {@powerlinePlayer{}} {3}} {.3}
+
+#nop -= vim: syntax=tt
+

@@ -46,35 +46,6 @@ global {rescueMe[$name]} {0};
 }
 
 #nop -- ---------------------------------------------------------------------
-#nop -- Ticks, Counters
-#nop -- ---------------------------------------------------------------------
-
-#nop -- Generate topline of status bar with Session, Tank, Timer
-#tick {statusBar} {
-  #format {sbar} {<faa>Tank: %s <fff>| %s%s%02s<099> | %02s:00 | %s | %+20s | %s | %s}
-    {$tank} {@counterBGColor{@secsLeftInTick{}}} {@tickColor{}}
-    {@secsLeftInTick{}}
-    {@clockColor{}$mudTime}
-    {@OpponentHealthBarGraph{}}
-    {@OpponentName{}}
-    {$GIT_BRANCH[1]}
-    {@nextMob{}};
-  #showme {$sbar} {$statRowsBottom};
-  #unvar {sbar};
-} { 1 }
-
-# Let's update our stats bar 4 times a second
-#tick {showStats} {showStats} {.25};
-#alias showStats {
-    updateVitals;
-
-    #list {registeredPlayers} {find} {$name} {fooIndex};
-    #if {$fooIndex} {
-        #all #showme {<ebb>$curLevel[$name]<fff>|@statPlayerColor{$name}$playerInitial[$name]<000><078>: $vHPBar[$name]} {$statRowsBottom - $fooIndex};
-    }
-}
-
-#nop -- ---------------------------------------------------------------------
 #nop -- Functions
 #nop -- ---------------------------------------------------------------------
 

@@ -274,6 +274,7 @@
 #read $lib/inventory.tin
 #read $lib/math.tin
 #read $lib/cutscenes.tin
+#read $lib/powerline.tin
 
 #if { "$class" != "mutant" } {
    #read $lib/practice.tin;
