@@ -48,7 +48,7 @@
     };
 
     #format width {%C};
-    #var result {${_plName}${_plHP}${_plMA}${_plMV} <fff>| ${tmpXP} | ${xpRate[$name]} | $statusLine[$name]};
+    #var result {${_plName} ${_plHP}${_plMA}${_plMV} <fff>| ${tmpXP} | ${xpRate[$name]} | $statusLine[$name]};
     #format result {%.${width}s} {$result};
 }
 
