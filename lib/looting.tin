@@ -58,7 +58,7 @@
    } {#nop}
 }
 
-#alias devourCorpse { #if { @isAuto{devour} } { #if {"%1" == "fleshy" } { devour corpse } } {#nop} }
+#alias devourCorpse { #nop %0; #if { @isAuto{devour} } { #if {"%1" == "fleshy" } { devour corpse } } {#nop} }
 
 #alias jDrop { #delay {drop-%1} {drop all.%1} {1} }
 
@@ -67,7 +67,7 @@
 #nop -- Functions
 #nop -- ---------------------------------------------------------------
 
-#func isAuto { #if {$_autos[%1] == "on"} { #var result 1 } { #var result 2 } }
+#func isAuto { #if {"$_autos[%1]" == "on"} { #var result 1 } { #var result 0 } }
 
 #nop -- ---------------------------------------------------------------
 #nop -- Actions / Triggers
