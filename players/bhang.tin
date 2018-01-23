@@ -25,11 +25,19 @@
 #nop -- ---------------------------------------------------------------
 
 #alias {_setup} {
+
     #read $lib/common.tin;
     #send bal;
     #send sc;
     #delay {2} {dress};
+
+    auto loot on;
+    auto devour on;
+    auto scavenge on;
+    auto split off;
+
     #unalias {_setup};
+
 }
 
 #alias {dress} {dressMutant}
@@ -112,19 +120,14 @@
 #var {eqREXP[encircling body]}      {a mysterious tiki enchantment}
 #var {eqREXP[affixed to armor]}     {colossal blackened horns}
 #var {eqREXP[worn on body]}         {plasteel body armor}
-#nop -- #var {eqREXP[worn on body]}         {a powered plastic assault suit}
 #var {eqREXP[worn on back]}         {worn road sign}
-#nop -- #var {eqREXP[worn on back]}         {a plasma membrane}
 #var {eqREXP[worn on head]}         {some antlers}
-#var {eqREXP[worn on face]}         {the faceplate of the Shrike}
-#nop -- #var {eqREXP[worn on face]}         {large mechanical fangs}
+#var {eqREXP[worn on face]}         {a mechanized muzzle}
 #var {eqREXP[worn on legs]}         {some ceramic leggings}
-#nop -- #var {eqREXP[worn on legs]}         {tarnished metal greaves}
 #var {eqREXP[worn on feet]}         {flaming footwear}
 #var {eqREXP[worn on hands]}        {Gauntlets of Might}
 #var {eqREXP[worn on arms]}         {powered armgear}
 #var {eqREXP[worn about body]}      {a bestial hide}
-#nop -- #var {eqREXP[worn about body]}      {a vaporous shroud}
 #var {eqREXP[worn about waist]}     {lightweight champion belt}
 #var {eqREXP[wielded]}              {Spada}
 #var {eqREXP[accessory]}            {flaming 190 Octane}
@@ -137,7 +140,6 @@
 #nop -- Multi Slots.  Take care editing this, separate items with |
 #var {eqREXP[worn on finger]}       {the Ring of Inheritance|Manowar|the Ring of the Gods}
 #var {eqREXP[worn around neck]}     {a scorched metal charm|a golden flame}
-#nop -- #var {eqREXP[worn around neck]}     {a scorched metal charm|a dog tag}
 #var {eqREXP[worn in ear]}          {a golden anchor earring}
 #var {eqREXP[worn around wrist]}    {a fascinus charm|a blitz bangle}
 
