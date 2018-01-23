@@ -12,9 +12,9 @@
 #nop -- ---------------------------------------------------------------
 #nop -- Set up
 #nop -- ---------------------------------------------------------------
-autoLoot off
-autoDevour off
-autoSplit on
+auto loot off
+auto devour off
+auto split on
 
 rem hide;put all hide;wear all
 

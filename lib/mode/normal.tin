@@ -6,9 +6,9 @@
 #nop -- ---------------------------------------------------------------
 #nop -- Configuration variables
 #nop -- ---------------------------------------------------------------
-autoDevour on
-autoLoot on
-autoSplit off
+auto devour on
+auto loot on
+auto split off
 
 auto shell on;
 auto claws on;
