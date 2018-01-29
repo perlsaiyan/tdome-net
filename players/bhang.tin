@@ -61,16 +61,16 @@
     } {
         put inheritance hide;
     };
-    sidePack; put ${sidepack} ${mainpack};
-    put advance $invpack;
+    put advance ${invpack};
+    put all.scroll ${mainpack};
     put all.gun ${mainpack};
-    put wings ${mainpack};
     wear all; wear all;
     rem $mainpack;
     put all $mainpack;
     get $invpack $mainpack;
     wear all;
 } {5}
+
 #alias {sidePack} {
     put slaying ${sidepack};
     put all.talisman ${sidepack};
