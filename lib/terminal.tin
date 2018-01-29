@@ -1,0 +1,36 @@
+#nop -- VSOF, functions for dealing with terminal go herer
+
+#class {terminal} {kill}
+#class {terminal} {open}
+
+#nop -- ---------------------------------------------------------------
+#nop -- Highlights / Substitutions / Gags
+#nop -- ---------------------------------------------------------------
+#action {** FIRST RELATIVE VECTOR: {north|east|south|west|up|down}    **} {
+    #echo {<ace>** FIRST RELATIVE VECTOR: <bdf>%1<ace>    **};
+    #line gag
+}
+
+#action {** TARGET I.D. CONFIRMED: %1 **} {
+    #echo {<dbf>** TARGET I.D. CONFIRMED: <ecf>%1<dbf> **};
+    #line gag
+}
+
+#gag {^A Gameboy Advance SP displays: ** DOWNLOADING VECTOR CALCULATIONS....   **}
+#gag {^A Gameboy Advance SP displays: ** PROCESSING LOCAL COORDINATES....      **}
+#gag {^A Gameboy Advance SP displays: ** VECTOR CONVERSION COMPLETE            **}
+#gag {^A Gameboy Advance SP displays: ** ATTEMPTING ACCESS TO SKYNET GPS SURVEILLANCE **}
+#gag {^A Gameboy Advance SP displays: ** GPS SYSTEM CONNECTION ESTABLISHED     **}
+#gag {^A Gameboy Advance SP displays: ** SKYNET S.L.S. OPERATING VERSION 3.4   **}
+#gag {^A Gameboy Advance SP displays: ** DISCONNECTING FROM GPS SYSTEM         **}
+#gag {^A Gameboy Advance SP flashes:  ** COMMAND COMPLETED **}
+
+#nop -- ---------------------------------------------------------------
+#nop -- Events
+#nop -- ---------------------------------------------------------------
+#act {^A Gameboy Advance SP flashes:  ** COMMAND COMPLETED **$} { event_raise {terminal_command_complete} }
+#act {^A Gameboy Advance SP displays: ** ACCESSING T.A.S.E. SYSTEMS **$} { event_raise {stock_access} }
+
+#class {terminal} {close}
+
+#nop -- vim: syntax=tt
