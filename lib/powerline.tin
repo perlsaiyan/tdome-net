@@ -55,9 +55,10 @@
 #nop -- ---------------------------------------------------------------
 #nop -- Tickers
 #nop -- ---------------------------------------------------------------
-#tick {statusBar} { #showme {@powerstatus{}} {$statRowsBottom}} {.3}
+#tick {statusBar} { #showme {@powerstatus{}} {$statRowsBottom}} {.25}
 #nop -- This is temporary garbage
-#tick {playerBar} { #showme {@powerlinePlayer{}} {3}} {.3}
+#tick {playerBar} { #showme {@powerlinePlayer{}} {2}} {.25}
+#tick {emptyBar} {#echo {{ } {3}}} {.1}
 
 #nop -= vim: syntax=tt
 
