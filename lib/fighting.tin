@@ -68,6 +68,10 @@ event_register {fighting} {checker} {#var ISFIGHTING {on} }
 #nop -- ---------------------------------------------------------------------
 #nop -- Timer
 #nop -- ---------------------------------------------------------------------
-#tick {checker} { #if { "$ISFIGHTING" == "on" } {dia} } {10}
+#tick {checker} { 
+  #if { "$ISFIGHTING" == "on" } {
+    #if {"$mode" != "AUTO"} {dia};
+  };
+} {10}
 
 #class {fighting} {close};
