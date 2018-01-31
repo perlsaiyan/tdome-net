@@ -91,6 +91,13 @@
   }
 }
 
+#nop -- Split on loot/pilfer
+#action {^There were %1 credits.} {
+  #if { @isAuto{split} } {
+      #math lootCredits {$lootCredits + %1};
+      #delay {splitCash} {split $lootCredits; #var lootCredits 0;} {.5};
+  };
+}
 
 
 #nop -- Let's pick up stuff
@@ -109,13 +116,6 @@
 #action {^You get a chunk of wood} {jDrop wood}
 #action {^You get a cigarette} {jDrop cigarette}
 
-#nop -- Split on loot/pilfer
-#action {^There were %1 credits.} {
-  #if {"$autoSplit" == "on"} {
-      #math lootCredits {$lootCredits + %1};
-      #delay {splitCash} {split $lootCredits; #var lootCredits 0;} {.5};
-  };
-}
 
 #action {^...you found a hidden cache of %1 credits} {#if {"$autoSplit" == "on"} {split %1}}
 
