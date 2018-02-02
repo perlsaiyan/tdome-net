@@ -1,0 +1,169 @@
+#nop -- Rescue arbitrary players
+#nop -- vim:syntax=tt
+
+#class {rescue} {kill}
+#class {rescue} {open}
+
+#list {rescueFriends} {create} {Goliath} {Juki} {Hobos} {OH} {Davy} {Anicca};
+
+#var Cattacktype {bite|blast|claw|crush|hack and slash|hit|pierce|pound|slash|sting|whip}
+#var Cattacktypes {bites|blasts|claws|crushes|hacks and slashes|hits|pierces|pounds|slashes|stings|whips}
+#var Cpronoun {him|her|it}
+#var Cppronoun {his|her|its}
+
+
+#nop -- GENERIC ATTACKS
+#ac {%1 DEMOLISHES %w!!!!!!!!} {#nop -- we do nothing if we're getting killed this bad}
+#ac {%1's {$Cattacktype} ROCKS THE HELL OUT OF %w!!!!!!} {checkAssist %3}
+#ac {%1 DESTROYS %w with {$Cppronoun} ultimate {$Cattacktype}!!!} {checkAssist %2}
+#ac {%1 EVISCERATES %w with {$Cppronoun} incredibly powerful {$Cattacktype}!!!} {checkAssist %2}
+#ac {%1 OBLITERATES %w with {$Cppronoun} deadly {$Cattacktype}!!} {checkAssist %2}
+#ac {%1 RIPS %w to small bits with {$Cppronoun} {$Cattacktype}.} {checkAssist %2}
+#ac {%1 {$Cattacktypes} %w extremely hard.} {checkAssist %3}
+#ac {%1 {$Cattacktypes} %w very hard.} {checkAssist %3}
+#ac {%1 {$Cattacktypes} %w hard with %3.} {checkAssist %3}
+#ac {%1 {$Cattacktypes} %w hard.} {checkAssist %3}
+#ac {%1 {$Cattacktypes} %w!} {checkAssist %3}
+#ac {%1 {$Cattacktypes} %w.$} {checkAssist %3}
+#ac {%1 {$Cattacktypes} %w's arm!!} {checkAssist %3}
+#ac {%1 barely {$Cattacktypes} %w.$} {checkAssist %3}
+#ac {%1 grazes %w with {$Cppronoun} {$Cattacktype}.} {checkAssist %2}
+
+
+#ac {%1 boxes %w's jaw loose, {$Cppronoun} teeth fly everywhere!} {checkAssist %2}
+#ac {%1 fiendishly slices %w with {$Cppronoun} {$Cattacktype}!} {checkAssist %2}
+#ac {%1 gives %w a blow that knocks snot out of {$Cppronoun} nose!} {checkAssist %2}
+#ac {%1 makes {$Cppronoun} initials known on %w's face!} {checkAssist %3}
+#ac {%1 nicely dissects the ribcage of %w with a single slash!} {checkAssist %2}
+#ac {%1 cuts into %w as %3 grins with delight!!!} {checkAssist %2}
+#ac {%1 slashes into %w as %3 chortles with glee!} {checkAssist %2}
+#ac {%1 of %2 slams into %w!} {checkAssist %3}
+#ac {%1 swings mightily... %2 knocks %w to {$Cppronoun} knees!} {checkAssist %3}
+
+
+#nop BARBARIAN ATTACKS
+#ac {%1 butts heads with %w... %3 goes down hard!} {checkAssist %3}
+#ac {%1 tries to headbutt %w but misses... you cringe to see the sight!} {checkAssist %2}
+#ac {%1 drives %w into the ground!} {checkAssist %2}
+#ac {%1 tries to drive %w into the ground but misses badly!} {checkAssist %2}
+#ac {%1 grabs %w in a big bear hug} {checkAssist %2}
+#ac {%1 tries to grab %w in a bear hug but misses!} {checkAssist %2}
+#ac {%1 slams %w to the ground, knocking {$Cppronoun} socks off!} {checkAssist %2}
+#ac {%1 tries to slam %w into the ground... it doesn't work!} {checkAssist %2}
+#ac {%1 smacks %w hard with an elbow!} {checkAssist %2}
+#ac {%1 misses %w with a wild elbow strike!} {checkAssist %2}
+
+#nop KICKS
+#ac {%1 kicks %w in the body hard!} {checkAssist %2}
+#ac {%1 kicks at %w but hits nothing!} {checkAssist %2}
+#ac {%1 spins around and smashes %w with a roundhouse kick!} {checkAssist %2}
+
+#nop BAREHAND
+#ac {%1 pummels %w with {$Cppronoun} bare hands!!} {checkAssist %2;checkAssist %1}
+#ac {%1's battle-hardened fist hammers %w!} {checkAssist %2;checkAssist %1}
+#ac {%1's fist crashes into %w's face!} {checkAssist %2;checkAssist %1}
+
+#nop MISSES
+#ac {%1 misses %w with {$Cppronoun} {$Cattacktype}.} {checkAssist %2}
+#ac {%1 pummels at %w with {$Cppronoun} bare hands but misses!!} {checkAssist %2}
+#ac {%1's mighty {$Cattacktype} misses %w!!} {checkAssist %3}
+#ac {%1's {$Cattacktype} misses %w who laughs in sheer delight, HA!} {checkAssist %3}
+#ac {%w jumps back just in time as %2 slashes with %3!} {checkAssist %1}
+#ac {%1 swings at %w with %3 but misses!} {checkAssist %2}
+
+#nop CIRCLE/DISEMBOWEL
+#ac {%1 rakes {$Cppronoun} claws across %w's body!} {checkAssist %3}
+#ac {%1 rakes %2 across %w's abdomen! Yuck!} {checkAssist %3}
+#ac {%1 places %2 in the back of %w, resulting in a scream of pain and some blood!} {checkAssist %3}
+#ac {%1 tries to disembowel %w, but fails rather messily!} {checkAssist %2}
+#ac {%1 tries to backstab %w but misses badly!} {checkAssist %2}
+
+#nop BASH
+#ac {%1 sends %w sprawling with a powerful bash!} {checkAssist %2}
+#ac {%w avoids being bashed by %2 who loses his balance and falls!} {checkAssist %1}
+
+#nop PIRATES
+#ac {%1 tries to wallop %w but misses with %3!!} {checkAssist %2}
+#ac {%1 wallops %w's head with %3!!} {checkAssist %2}
+
+#nop POUND
+#ac {%w is knocked back by the force of %2's blow!} {checkAssist %1}
+#ac {%1's heavy arm strikes %w with a monstrous blow!} {checkAssist %2}
+#ac {%1 miscomputes his swing... missing %w!} {checkAssist %2}
+#ac {%1 swings a heavy arm at %w but misses!} {checkAssist %2}
+
+#nop SLINGERS
+#ac {%1 grins as her fireball explodes into the face of %w!} {checkAssist %2}
+#ac {%1 hits %w with {$Cppronoun} ray of disruption!} {checkAssist %2}
+
+#nop MUTANTS
+#ac {%1's psionic energy blasts %w's brain!} {checkAssist %2; checkAssist %1}
+#ac {%1 hits %w right in the face with a stream of spew!} {checkAssist %2}
+#ac {%1 spews bile and hunks of stuff all over... missing %w!} {checkAssist %2}
+
+#nop GUN HITS-----------------------------------
+#ac {Blood splatters from %w's body as %2's bullet passes through it!!} {checkAssist %1}
+#ac {%1's blast hits %w square in the chest!} {checkAssist %2}
+#ac {%w is knocked back by the powerful blast of %2's %3!} {checkAssist %1}
+#ac {%w is blown back by the mighty blast from %2!!} {checkAssist %1}
+#ac {The blast from %1 hits %w, almost knocking ${Cpronoun} down!!} {checkAssist %2}
+#ac {The mighty blast from %1's gun does bad things to %w!} {checkAssist %2}
+#ac {%1's blast tears a hole in the side of %w!} {checkAssist %2}
+#ac {%w looks shocked as %2's bullet hits {$Cpronoun}!!} {checkAssist %1}
+#ac {%w winces as %2's bullet hits {$Cpronoun} in the shoulder!} {checkAssist %1}
+#ac {%1's bullet hits %w in the arm! That must hurt!} {checkAssist %2}
+#ac {%w jerks in reaction as %2's bullet strikes {Cppronoun} leg.} {checkAssist %1}
+#ac {%w cringes as the blast from a %2 narrowly misses {$Cpronoun}!} {checkAssist %1}
+#ac {%w is very lucky to dodge %2's powerful shot!} {checkAssist %1}
+#ac {%1 pulls the trigger... but %w dodges the bullet just in time!} {checkAssist %2}
+#ac {%w is lucky... %2's bullet misses {$Cpronoun}!} {checkAssist %1}
+#ac {%1's powerful shot narrowly misses %w!} {checkAssist %2}
+#ac {%w narrowly escapes a bloody death!} {checkAssist %1}
+#ac {%1's aim was not good enough to hit %w!} {checkAssist %2}
+
+
+#nop -----------------------------------------------------------------------------------------------
+#nop -- Actual aliases
+#nop -----------------------------------------------------------------------------------------------
+
+#tab autoRescue
+#alias autoRescue {
+
+  #if {"%1" == ""} {
+   #echo {Auto rescue: $rescueFriends}
+  } {
+    #list rescueFriends {find} {%1} {tmpFind};
+    #if { $tmpFind > 0 } {
+      #echo {Removing %1 from the auto-rescue list.};
+      #list rescueFriends {delete} $tmpFind;
+    } {
+      #echo {Adding %1 to the auto-rescue list.  This is case sensitive.};
+      #list rescueFriends {add} {%1};
+    }
+  }
+
+}
+
+#alias checkAssist {
+
+  #var vict %1;
+  #list {rescueFriends} {find} {$vict} {tempVict};
+  #if {$tempVict > 0 } {
+    statusUpdate {$vict needs rescue} {<eaa>};
+    #var rescueMe[$vict] 1;
+  }
+
+}
+
+
+#alias rr {
+
+  #if {&rescueMe > 0 } {
+      #foreach $rescueMe[] {person} {
+        rescue $person;
+      };
+  };
+};
+
+#class {rescue} {close}
+

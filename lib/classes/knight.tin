@@ -1,7 +1,10 @@
 #nop -- VSOF, knight routines
 
+#read $lib/rescue.tin
+
 #class {knight} {kill}
 #class {knight} {open}
+
 
 #alias pfg { slingSelfOrTarget {protection from good} {%1} }
 #alias pfe { slingSelfOrTarget {protection from evil} {%1} }
