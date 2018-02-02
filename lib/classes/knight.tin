@@ -1,0 +1,13 @@
+#nop -- VSOF, knight routines
+
+#class {knight} {kill}
+#class {knight} {open}
+
+#alias pfg { slingSelfOrTarget {protection from good} {%1} }
+#alias pfe { slingSelfOrTarget {protection from evil} {%1} }
+#alias barrier { sling 'barrier' }
+#alias wor { sling 'word of recall' }
+
+#class {knight} {close}
+
+#nop -- vim: syntax=tt
