@@ -10,13 +10,13 @@
 #var {name} {bhang};
 #var {sessionname} {bh};
 #var sex[$name] male;
-#var class mutant;
-#var title {the Welfare Mutant}
+#var class knight;
+#var title {the Slightly Knightly}
 #var mode NORM;
 
-#var {mainpack} {bestial}
+#var {mainpack} {incorporeal}
 #var {sidepack} {guitar}
-#var {invpack} {incorporeal}
+#var {invpack} {molle}
 
 #nop -- #debug all;
 
@@ -32,7 +32,6 @@
     #delay {2} {dress};
 
     auto loot on;
-    auto devour on;
     auto scavenge on;
     auto split off;
 
@@ -40,7 +39,7 @@
 
 }
 
-#alias {dress} {dressMutant}
+#alias {dress} {dressKnight}
 
 #alias {dressCyborg} {
   #if {$curLevel[$name] < 30} {
@@ -69,6 +68,25 @@
     put all $mainpack;
     get $invpack $mainpack;
     wear all;
+} {5}
+
+#alias {dressKnight}
+{
+    time;
+    #if {$curLevel[$name] < 30} {
+        put gods ${mainpack};
+    } {
+        put inheritance ${mainpack};
+    };
+    put advance ${invpack};
+    put all.scroll ${mainpack};
+    put all.gun ${mainpack};
+    wear ${mainpack};
+    wear all; wear all;
+    rem $mainpack;
+    put all $mainpack;
+    get $invpack $mainpack;
+    wear ${mainpack};
 } {5}
 
 #alias {sidePack} {
@@ -120,21 +138,21 @@
 #var {eqREXP[encircling body]}      {a mysterious tiki enchantment}
 #var {eqREXP[affixed to armor]}     {colossal blackened horns}
 #var {eqREXP[worn on body]}         {plasteel body armor}
-#var {eqREXP[worn on back]}         {worn road sign}
+#var {eqREXP[worn on back]}         {an incorporeal orb hovering overhead}
 #var {eqREXP[worn on head]}         {some antlers}
 #var {eqREXP[worn on face]}         {a mechanized muzzle}
-#var {eqREXP[worn on legs]}         {some ceramic leggings}
+#var {eqREXP[worn on legs]}         {a black iron kilt}
 #var {eqREXP[worn on feet]}         {flaming footwear}
 #var {eqREXP[worn on hands]}        {Gauntlets of Might}
 #var {eqREXP[worn on arms]}         {powered armgear}
-#var {eqREXP[worn about body]}      {a bestial hide}
+#var {eqREXP[worn about body]}      {a vaporous shroud}
 #var {eqREXP[worn about waist]}     {lightweight champion belt}
 #var {eqREXP[wielded]}              {Spada}
 #var {eqREXP[accessory]}            {flaming 190 Octane}
 #var {eqREXP[pierced cock]}         {a railroad spike}
 #var {eqREXP[pierced septum]}       {black-zirconium bolt}
 #var {eqREXP[pierced skull]}        {transdermal mohawk spikes}
-#var {eqREXP[pierced brow]}         {}
+#var {eqREXP[pierced brow]}         {a titanium screw}
 #var {eqREXP[worn as shield]}       {a dorsalventral plate}
 
 #nop -- Multi Slots.  Take care editing this, separate items with |
@@ -151,5 +169,5 @@
 #nop -- Tintin files we only want for this character
 #nop -- ---------------------------------------------------------------
 #read $lib/autoLogin.tin
-#read $lib/classes/mutant.tin
+#read $lib/classes/knight.tin
 
