@@ -16,7 +16,7 @@ auto loot off
 auto devour off
 auto split on
 
-rem hide;put all hide;wear all
+rem ${mainpack};put all ${mainpack};wear all
 
 
 #nop -- ---------------------------------------------------------------
