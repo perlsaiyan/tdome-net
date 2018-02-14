@@ -1,0 +1,51 @@
+#nop -- Generic practice stuff
+
+#class {practice} {kill}
+#class {practice} {open}
+
+#nop ------------------------------------------------------------------------
+#nop Aliases, commands
+#nop ------------------------------------------------------------------------
+
+#nop -- practice all Skills we can
+#tab pracAll
+#alias pracAll {
+  prac; #delay {.5} {#cr};#delay {1} {#cr}; #delay {1.5} {#cr};
+  #delay {1.8} {_pracAllSkills};
+}
+
+#alias {_pracAllSkills} {
+    #if {&pracNeeded[]} {
+        #forall {$pracNeeded[%*]} {
+            #echo {<dfe>Practice skill <cdd> &0};
+            #3 prac &0;
+        };
+    } {
+        #echo {<dfe>No skills to learn.};
+    };
+};
+
+#nop ------------------------------------------------------------------------
+#nop Actions, Triggers
+#nop ------------------------------------------------------------------------
+
+#action {^%+ ({(not learned|poor|bad|good|excellent|superb)}} {
+    #format {_skill} {%p} {%1};
+    #list {skillsBlacklist} {find} {$_skill} {_result};
+    #if {$_result == 0} {
+        #if {"%2" != "excellent"} {
+            #list {pracNeeded} {add} {$_skill};
+        };
+    };
+} {4};
+
+#action {^You can practice any of these skills:} { #list {pracNeeded} {clear} };
+
+#nop ------------------------------------------------------------------------
+#nop Functions
+#nop ------------------------------------------------------------------------
+
+#class {practice} {close}
+
+
+#nop -- vim:syntax=tt

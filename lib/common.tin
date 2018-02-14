@@ -8,7 +8,6 @@
 #var signUser Bhang
 #var lookingAtRoom 0;
 
-#ACTION {^#SESSION '%0' ACTIVATED.} {#buffer end;#all #var cursession %0; updateVitals}
 #ACTION {You need some food.} {	#all #showme $name is hungry! } {5}
 #ACTION {^You rise a level} {
  #if { "$title" != "" } {
@@ -273,6 +272,7 @@
 #read $lib/kill.tin
 #read $lib/inventory.tin
 #read $lib/math.tin
+#read $lib/practice.tin
 #nop -- #read $lib/cutscenes.tin;
 #read $lib/powerline.tin
 #read $lib/terminal.tin
@@ -302,6 +302,8 @@ log on
 #nop -- I'm not sure this is in the correct place
 #nop -- ---------------------------------------------------------------
 
+#event {SESSION ACTIVATED} {#buffer end;#all #var cursession %0}
+
 #action {< %1H %2M %3V >} { event_raise {prompt} {%1} {%2} {%3} }
 event_register {prompt} {ENDROOMLOOK} {roomLookEnd}
 
@@ -313,6 +315,7 @@ event_register {prompt} {ENDROOMLOOK} {roomLookEnd}
 }
 
 #action {~\e[0m$} { event_raise {blankline} }
+
 
 #nop -- ---------------------------------------------------------------
 
