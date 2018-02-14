@@ -10,13 +10,15 @@
 #var {name} {bhang};
 #var {sessionname} {bh};
 #var sex[$name] male;
-#var class knight;
-#var title {the Slightly Knightly}
+#var class samurai;
+#var title {Musashi the Sloshy Samurashy}
 #var mode NORM;
 
 #var {mainpack} {incorporeal}
 #var {sidepack} {guitar}
 #var {invpack} {molle}
+
+#list {skillsBlacklist} {create} {sneak} {detect invisible} {detect poison};
 
 #nop -- #debug all;
 
@@ -79,8 +81,8 @@
         put inheritance ${mainpack};
     };
     put advance ${invpack};
-    put all.scroll ${mainpack};
     put all.gun ${mainpack};
+    put all.pick ${mainpack};
     wear ${mainpack};
     wear all; wear all;
     rem $mainpack;
@@ -141,7 +143,7 @@
 #var {eqREXP[worn on back]}         {an incorporeal orb hovering overhead}
 #var {eqREXP[worn on head]}         {some antlers}
 #var {eqREXP[worn on face]}         {a mechanized muzzle}
-#var {eqREXP[worn on legs]}         {a black iron kilt}
+#var {eqREXP[worn on legs]}         {some ceramic leggings}
 #var {eqREXP[worn on feet]}         {flaming footwear}
 #var {eqREXP[worn on hands]}        {Gauntlets of Might}
 #var {eqREXP[worn on arms]}         {powered armgear}
@@ -152,7 +154,7 @@
 #var {eqREXP[pierced cock]}         {a railroad spike}
 #var {eqREXP[pierced septum]}       {black-zirconium bolt}
 #var {eqREXP[pierced skull]}        {transdermal mohawk spikes}
-#var {eqREXP[pierced brow]}         {a titanium screw}
+#var {eqREXP[pierced brow]}         {}
 #var {eqREXP[worn as shield]}       {a dorsalventral plate}
 
 #nop -- Multi Slots.  Take care editing this, separate items with |
@@ -169,5 +171,5 @@
 #nop -- Tintin files we only want for this character
 #nop -- ---------------------------------------------------------------
 #read $lib/autoLogin.tin
-#read $lib/classes/knight.tin
+#read $lib/classes/samurai.tin
 
