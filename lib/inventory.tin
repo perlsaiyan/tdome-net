@@ -14,8 +14,10 @@
 #nop -- ---------------------------------------------------------------
 
 #nop -- Configuration
-#var lootPack {an incorporeal orb hovering overhead};
-#var lootPackKW {incorporeal};
+#nop -- #var lootPack {an incorporeal orb hovering overhead};
+#nop -- #var lootPackKW {incorporeal};
+#var lootPack {a MOLLE 2 rucksack};
+#var lootPackKW {rucksack};
 
 #nop -- Internal Use (do not edit)
 #list {invInPack} {create};
@@ -32,7 +34,7 @@
 #nop -- Actions
 #nop -- ---------------------------------------------------------------
 
-#action {^You put {.*} in an incorporeal orb hovering overhead.$} {
+#action {^You put {.*} in {$lootPack}.$} {
   #local {_item} {%1};
   #replace {$_item} { } {;};
   #list {tmpKW} {create} $_item;
@@ -52,13 +54,13 @@
   #nop -- Maybe this item shouldn't be packed;
   #list {invNoPack} {find} {$_item} {_tmpKeep};
   #if {$_tmpKeep > 0} {
-    #send {get $itemKW[$_item] orb};
+    #send {get $itemKW[$_item] ${lootPackKW}};
   };
   invSave;
 
 };
 
-#action {^You get {.*} from an incorporeal orb hovering overhead.$} {
+#action {^You get {.*} from {$lootPack}.$} {
 
     #local {_item} {%1};
     #list {invInPack} {find} {$_item} {_tmpIndex};
