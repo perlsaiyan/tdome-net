@@ -1,0 +1,21 @@
+#nop -- VSOF, samurai routines
+
+#class {samurai} {kill}
+#class {samurai} {open}
+
+#al gc {get all all.corpse}
+#al mm {sling 'magic missile' %1}
+#al sg {sling 'shocking grasp' %1}
+#al ct {sling 'chill touch' %1}
+#al bh {sling 'burning hands' %1}
+#al blind {sling 'blind' %1}
+#al cc {sling 'calliope' %1}
+#al cs {sling 'color spray' %1}
+#al spirit {sling 'spirit attack' %1}
+#al battle {sling 'battle rites' %1}
+#al ll {sling 'lightning bolt' %1}
+#al mystic {sling 'mystic' %1}
+
+#class {samurai} {close}
+
+#nop -- vim: syntax=tt
