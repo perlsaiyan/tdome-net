@@ -93,10 +93,21 @@
 
 #nop -- Split on loot/pilfer
 #action {^There were %1 credits.} {
+
+  #nop -- Update our cash on hand;
+  #math {cash[$name]} { $cash[$name] + %1 };
+
   #if { @isAuto{split} } {
       #math lootCredits {$lootCredits + %1};
       #delay {splitCash} {split $lootCredits; #var lootCredits 0;} {.5};
   };
+}
+
+#action {^You split %1 credits among %d members - $%d each.} {
+    #math {cash[$name]} {$cash[$name] - %1 + %3};
+}
+#action {^%w splits %d credits; you receive $%d.$} {
+    #math {cash[$name]} {$cash[$name] + %3};
 }
 
 
