@@ -48,7 +48,7 @@ global {exp[$name]} {0};
       #math {_gold} {$curRM[$name] * 213333 - ($bal[$name] + $cash[$name])};
 
       #if {$curLevel[$name] < 30} {
-        #showme <ffb>Killed %1, $lastExpEarned, $expPerSec XP/sec ($exp[$name] to level, $minsToLevel[$name] minutes).;
+        #showme <bdf>Killed <eea>%1<bdf>, <eea>@hNum{$lastExpEarned}<bdf> XP (<eea>@hNum{$expPerSec}<bdf> XP/sec, <eea>@hNum{$exp[$name]}<bdf> to level, <eea>$minsToLevel[$name]<bdf> minutes).;
       } {
         #showme <ffb>%1 killed | $lastExpEarned XP: $expPerSec XP/sec (@xpNeededToRemort{} to remort).;
       };
