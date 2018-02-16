@@ -1,12 +1,27 @@
 #nop -- VSOF - score screen functions
 
 #nop -- ---------------------------------------------------------------
-#nop -- Functions
+#nop -- Actions
 #nop -- ---------------------------------------------------------------
 
 #action {^Remorts by Class:} {
   #showme @scoreBlock{{Remort$}{@hNum{$remortCredits}}};
 }
+
+#act {^[ Remorts:%1%d ] [ Deaths:%3%d ] [ Experience: %5%d ]} {
+  global {curRM[$name]} {%2};
+  global {curXP[$name]} {%6};
+} {5}
+
+#act {^[ Con:%1%d ] [ Kills:%3%d ] [ Credits:%5$%6%d ]} {
+  global {curCON[$name]} {%2};
+  global {curKills[$name]} {%4};
+  global {cash[$name]} {%7};
+  #format {conline} {[ <020><AAA>Con:<050><AAA> %+10s<070><AAA> ] [ <020><AAA>Kills:<050><AAA> %+8s<070><AAA> ] [ <020><AAA>Credits:<050><AAA> %+16s<070><AAA>] }
+    {$curCON[$name]} {$curKills[$name]} {$cash[$name] / @hNum{$bal[$name]} } ;
+  #echo ${conline};
+  #line gag;
+} {5}
 
 #nop -- ---------------------------------------------------------------
 #nop -- Functions
