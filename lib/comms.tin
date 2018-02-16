@@ -22,18 +22,15 @@
 
 #var SOMEONE {Someone};
 
-#nop --#gag {%1 gossips, '%2};
 #action {%1 gossips, '%2} {
   #if {&{$commsIgnore[%1]}} {#nop } {
     globalCommsListAdd {gossip} {%1} {%2};
   }
 };
 
-#nop -- #gag {%1 telepaths to you '%2};
 #action {%1 telepaths to you '%2} {
   globalCommsListAdd {tele} {[$playerInitial[$name]] %1} {%2};
 };
-#nop -- #gag {%1 replies '%2};
 #action {%1 replies '%2} {
   globalCommsListAdd {tele} {[$playerInitial[$name]]%1} {%2};
 };
@@ -73,7 +70,6 @@
 }
 
 #alias commsUpdate {
-#nop --  #loop {1} {5} {counter} { #showme {$commsLine[$counter]} {-$counter}};
   #loop {1} {4} {counter} {
     #echo {{<G05>%-${screenwidth}s<G00>} {-$counter}} {$commsLine[$counter]};
   };

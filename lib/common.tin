@@ -72,7 +72,6 @@
 #CONFIG           {AUTO TAB}  {5000}
 #CONFIG           {BUFFER SIZE}  {20000}
 #CONFIG           {COMMAND COLOR}  {<078>}
-#nop -- #CONFIG           {COLOR PATCH}  {ON}
 #CONFIG           {COMMAND ECHO}  {ON}
 #CONFIG           {CONNECT RETRY}  {15}
 #CONFIG           {HISTORY SIZE}  {1000}
