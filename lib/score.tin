@@ -1,0 +1,27 @@
+#nop -- VSOF - score screen functions
+
+#nop -- ---------------------------------------------------------------
+#nop -- Functions
+#nop -- ---------------------------------------------------------------
+
+#action {^Remorts by Class:} {
+  #showme @scoreBlock{{Remort$}{@hNum{$remortCredits}}};
+}
+
+#nop -- ---------------------------------------------------------------
+#nop -- Functions
+#nop -- ---------------------------------------------------------------
+
+#nop -- Generate a score block with "proper" colors
+#func scoreBlock {
+
+  #var result {<078>[ <028>%1:};
+
+  #format {_test} {%L} {%1};
+  #math {_keylen} { 14 - $_test};
+  #format {result} {$result<058>%+${_keylen}s<078> ]} {%2}
+}
+
+
+
+#nop -- vim: syntax=tt

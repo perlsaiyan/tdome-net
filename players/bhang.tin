@@ -172,4 +172,5 @@
 #nop -- ---------------------------------------------------------------
 #read $lib/autoLogin.tin
 #read $lib/classes/samurai.tin
+#read $lib/score.tin
 
