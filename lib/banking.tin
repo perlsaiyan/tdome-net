@@ -1,37 +1,40 @@
 #nop -- Banking tools
 #nop -- vim: syntax=tt
 
+
+#class {bankdb} {open}
+#var remortCredits 0;
+#read $db/$name-bank.db;
+#class {bankdb} {close}
+
 #class {bank} {kill}
 #class {bank} {open}
 
-#tab loadBanking
-#alias loadBanking {#read $ttd/banking.tin}
-
+#nop -- ---------------------------------------------------------------
+#nop -- Actions and Triggers
+#nop -- ---------------------------------------------------------------
 
 #action {^Your current balance is %0 credits.} {#all #var bal[$name] %0 } {7}
-#action {[ Credits:        $%3 ]} {#all #var cash[$name] %3} {7}
 
-#alias {cash2bhang} {#all doCashBhang; }; 
+#nop -- Fire Events
+#action {^You withdraw %d credits.$} { event_raise {bankWithdraw} {%1} }
+#action {^You deposit %d credits.$}  { event_raise {bankDeposit} {%1} }
 
-#alias {doCashBhang} {#if { "$name" != "bhang" } { give $cash[$name] credits bhang; }}
+#nop -- ---------------------------------------------------------------
+#nop -- Events
+#nop -- ---------------------------------------------------------------
 
-#tab rebalanceCash
-#alias rebalanceCash {
+event_register {remort} {resetCredits} { #var remortCredits 0; bankSave; }
+event_register {bankWithdraw} {subCredits} { bankRCSub }
+event_register {bankDeposit} {addCredits} { bankRCAdd }
 
- #all bal;
- #all #delay {1} {emptyBank};
- #delay {2} {asc};
- #delay {3} {cash2bhang};
- #bh #delay {4} {sc};
- #delay {5} {bankerSplit};
- #delay {6} {asc};
- #all #delay {7} {depAll};
- #all #delay {8} {bal;score};
- #delay {9} {status}
-}
+#nop -- ---------------------------------------------------------------
+#nop -- Aliases
+#nop -- ---------------------------------------------------------------
 
-#alias emptyBank { wit $bal[$name] }
-#alias depAll { dep $cash[$name] }
-#alias bankerSplit { #bh split $cash[bhang] }
+#alias bankSave { #class {bankdb} {write} {$db/$name-bank.db}; }
+#alias bankRCAdd { #math {remortCredits} {$remortCredits + %2}; bankSave; }
+#alias bankRCSub { #math {remortCredits} {$remortCredits - %2}; bankSave; }
 
 #class {bank} {close}
+
