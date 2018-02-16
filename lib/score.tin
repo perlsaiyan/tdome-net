@@ -17,9 +17,9 @@
   global {curCON[$name]} {%2};
   global {curKills[$name]} {%4};
   global {cash[$name]} {%7};
-  #format {conline} {[ <020><AAA>Con:<050><AAA> %+10s<070><AAA> ] [ <020><AAA>Kills:<050><AAA> %+8s<070><AAA> ] [ <020><AAA>Credits:<050><AAA> %+16s<070><AAA>] }
-    {$curCON[$name]} {$curKills[$name]} {$cash[$name] / @hNum{$bal[$name]} } ;
-  #echo ${conline};
+
+  #echo {@scoreBlock{{Con}{$curCON[$name]}} @scoreBlock{{Kills}{$curKills[$name]}} @scoreBlock{{Credits}{$cash[$name] / @hNum{$bal[$name]}}{23}}};
+
   #line gag;
 } {5}
 
@@ -31,9 +31,9 @@
 #func scoreBlock {
 
   #var result {<078>[ <028>%1:};
-
+  #if {"%3" == ""} { #var _size 14; } { #var _size %3};
   #format {_test} {%L} {%1};
-  #math {_keylen} { 14 - $_test};
+  #math {_keylen} { $_size - $_test};
   #format {result} {$result<058>%+${_keylen}s<078> ]} {%2}
 }
 
