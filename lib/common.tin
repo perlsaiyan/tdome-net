@@ -241,7 +241,6 @@
 #read $lib/speedwalk.tin
 #read $lib/time.tin
 #read $lib/bufs.tin
-#read $lib/counters.tin
 #read $lib/fighting.tin
 #read $lib/signpost.tin
 #read $lib/combat.tin
