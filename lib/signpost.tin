@@ -147,6 +147,11 @@
 #alias signUpgrade { signUpgrade16; signUpgrade24 }
 
 #nop -----------------------------------------------------------------------
+#nop Tintin Builtin Hash Routines
+#nop -----------------------------------------------------------------------
+#function {TTH} { #hash {result} {%1} }
+
+#nop -----------------------------------------------------------------------
 #nop Save/Load Routines
 #nop -----------------------------------------------------------------------
 
@@ -168,6 +173,7 @@
     #nop -- #var curRoomSignKey16 {@mkhash16{$curRoomKey $roomDesc}};
     #nop -- #var curRoomSignKey24 {@mkhash24{$curRoomKey $roomDesc}};
     #var curRoomSignKeyBis24 {@roomTitleClean{$curRoom}|@mkhash24{$curRoomKey $roomDesc}};
+    #var curRoomTTH {@roomTitleClean{$curRoom}|@TTH{$curRoomKey $roomDesc}};
     #class {roomTemp} {kill};
   };
 }
