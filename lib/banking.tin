@@ -27,6 +27,8 @@
 event_register {remort} {resetCredits} { #var remortCredits 0; bankSave; }
 event_register {bankWithdraw} {subCredits} { bankRCSub }
 event_register {bankDeposit} {addCredits} { bankRCAdd }
+event_register {transport} {subTransportCredits} { subTransportCredits }
+event_register {recall} {subRecallCredits} {subRecallCredits}
 
 #nop -- ---------------------------------------------------------------
 #nop -- Aliases
@@ -35,6 +37,38 @@ event_register {bankDeposit} {addCredits} { bankRCAdd }
 #alias bankSave { #class {bankdb} {write} {$db/$name-bank.db}; }
 #alias bankRCAdd { #math {remortCredits} {$remortCredits + %2}; bankSave; }
 #alias bankRCSub { #math {remortCredits} {$remortCredits - %2}; bankSave; }
+#alias subRecallCredits { bankRCSub {recall} {450}  }
+
+#alias subTransportCredits {
+    #list {transportCommon} {find} {%3} {_result};
+    #if {$_result > 0} {
+        #if {"$curRoomTTH" == "Room of Summoning|aad3b693" } {
+            bankRCSub {transportNBK} {500}
+        };
+        #elseif {"$curRoomTTH" == "Club Boom|0d0ccee6" } {
+            bankRCSub {transportNBK} {500}
+        };
+        #else {
+            bankRCSub {transportCommon} {1000}
+        };
+
+    } {
+        #list {transportJacker} {find} {%3} {_result};
+        #if {$_result == 0} {
+            syslog {Unknown transport option, please add details to banking.tin}
+        };
+    }
+
+}
+
+
+#nop -- ---------------------------------------------------------------
+#nop -- Variables
+#nop -- ---------------------------------------------------------------
+#list {transportCommon} {create} {Tek Angeles} {Casa Blanca} {Silicia} {Lost Wages} {Cyboria} {Club Boom} {Tek Angles};
+#list {transportJacker} {create} {Tek Angeles HQ} {Combat Information Center} {Outpost Cyboria} {Base Station Sea Star}
+    {Tactical Operations Center};
+
 
 #class {bank} {close}
 
