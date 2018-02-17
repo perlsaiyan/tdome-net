@@ -289,7 +289,9 @@ event_register {prompt} {ENDROOMLOOK} {roomLookEnd}
 
 #action {~\e[0m$} { event_raise {blankline} }
 #action {^The Remorter telepaths to you, 'There you are, kid.'$} {event_raise remort}
-
+#action {^You touch the display and select %1.$} {event_raise {transport} {$curRoomTTH} {%1}}
+#action {^You click your heels together three times and disappear!$} { event_raise {recall} }
+#action {^You click your heels together three times and disapear!$} { event_raise {recall} }
 
 #nop -- ---------------------------------------------------------------
 
