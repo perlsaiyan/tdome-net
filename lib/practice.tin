@@ -29,7 +29,7 @@
 #nop Actions, Triggers
 #nop ------------------------------------------------------------------------
 
-#action {^%+ ({(not learned|poor|bad|good|excellent|superb)}} {
+#action {^%+ ({(not learned|poor|bad|average|good|excellent|superb)}} {
     #format {_skill} {%p} {%1};
     #list {skillsBlacklist} {find} {$_skill} {_result};
     #if {$_result == 0} {
