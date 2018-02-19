@@ -26,7 +26,9 @@
 
 event_register {remort} {resetCredits} { #var remortCredits 0; bankSave; }
 event_register {bankWithdraw} {subCredits} { bankRCSub }
+event_register {bankWithdraw} {updateCash} { bankAddCash }
 event_register {bankDeposit} {addCredits} { bankRCAdd }
+event_register {bankDeposit} {updateCash} { bankSubCash }
 event_register {transport} {subTransportCredits} { subTransportCredits }
 event_register {recall} {subRecallCredits} {subRecallCredits}
 
@@ -37,6 +39,8 @@ event_register {recall} {subRecallCredits} {subRecallCredits}
 #alias bankSave { #class {bankdb} {write} {$db/$name-bank.db}; }
 #alias bankRCAdd { #math {remortCredits} {$remortCredits + %2}; bankSave; }
 #alias bankRCSub { #math {remortCredits} {$remortCredits - %2}; bankSave; }
+#alias bankSubCash { #math {cash[$name]} {$cash[$name] - %2} }
+#alias bankAddCash { #math {cash[$name]} {$cash[$name] + %2} }
 #alias subRecallCredits { bankRCSub {recall} {450}  }
 
 #alias subTransportCredits {
