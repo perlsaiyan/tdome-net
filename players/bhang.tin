@@ -12,6 +12,8 @@
 #var sex[$name] male;
 #var class samurai;
 #var title {Musashi the Sloshy Samurashy}
+#var startRoom {Tek Angeles HQ -|96d2300f}
+
 #var mode NORM;
 
 #var {mainpack} {incorporeal}
@@ -20,7 +22,6 @@
 
 #list {skillsBlacklist} {create} {sneak} {detect invisible} {detect poison};
 
-#nop -- #debug all;
 
 #nop -- ---------------------------------------------------------------
 #nop -- Aliases
