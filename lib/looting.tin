@@ -80,17 +80,6 @@
   };
 }
 
-#nop -- Exits mean scavenge credits
-#nop -- We should probably turn this into an event
-#act {^Obvious exits:$} {
-  #if {"$autoScavenge" == "on"} {
-      #if {"$cashonground" == "1"} {
-        get all.credits;
-        #var cashonground 0
-      }
-  }
-}
-
 #nop -- Split on loot/pilfer
 #action {^There were %1 credits.} {
 
