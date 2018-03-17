@@ -14,10 +14,8 @@
 #nop -- ---------------------------------------------------------------
 
 #nop -- Configuration
-#nop -- #var lootPack {an incorporeal orb hovering overhead};
-#nop -- #var lootPackKW {incorporeal};
-#var lootPack {a MOLLE 2 rucksack};
-#var lootPackKW {rucksack};
+#var lootPack {an incorporeal orb hovering overhead};
+#var lootPackKW {incorporeal};
 
 #nop -- Internal Use (do not edit)
 #list {invInPack} {create};
