@@ -14,6 +14,7 @@
 #var tickCalibrated 0;     #nop -- is our ticker Calibrated?
 #var mudTime 0;            #nop -- Set MUD time to start
 #var mudTimeCalibrated 0;  #nop -- is our mudTime Calibrated?
+#list tickBufs {create} {shell} {fingers} {arms} {body} {claws} {brain};
 
 #nop -- ---------------------------------------------------------------------
 #nop -- Timers
@@ -89,6 +90,13 @@
   #var mudTimeCalibrated 1;
 }
 
+#alias bufTickCheck {
+    #list bufTickCheck {find} {%1} {result};
+    #if {$result} {
+        tickCalibrate
+    };
+}
+
 #nop -- ---------------------------------------------------------------------
 #nop -- Actions/Triggers to "calibrate" the tick counter and clock
 #nop --   We can use anything here, and should use as much stuff as
@@ -140,7 +148,7 @@
 #nop -- ---------------------------------------------------------------------
 
 event_register {tick} {tickEvent} {tickEvent};
-
+event_register {buffEnd} {time} {bufTickCheck %2}
 
 
 
