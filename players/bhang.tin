@@ -10,15 +10,15 @@
 #var {name} {bhang};
 #var {sessionname} {bh};
 #var sex[$name] male;
-#var class samurai;
-#var title {Musashi the Sloshy Samurashy}
+#var class mutant;
+#var title {is taking a vacation}
 #var startRoom {Tek Angeles HQ -|96d2300f}
 
 #var mode NORM;
 
-#var {mainpack} {incorporeal}
+#var {mainpack} {bestial}
 #var {sidepack} {guitar}
-#var {invpack} {molle}
+#var {invpack} {incorporeal}
 
 #list {skillsBlacklist} {create} {sneak} {detect invisible} {detect poison};
 
@@ -34,6 +34,7 @@
     #send sc;
     #delay {2} {dress};
 
+    #if { "$class" == "mutant" } { auto devour on };
     auto loot on;
     auto scavenge on;
     auto split off;
@@ -42,7 +43,7 @@
 
 }
 
-#alias {dress} {dressKnight}
+#alias {dress} {dressMutant}
 
 #alias {dressCyborg} {
   #if {$curLevel[$name] < 30} {
@@ -112,18 +113,34 @@
 }
 
 #alias inher {
-  rem gods;   put gods ${mainpack};
-  get inheritance ${mainpack}; wear inheritance;
+  rem gods; rem ${mainpack};  put gods ${mainpack};
+  get inheritance ${mainpack}; wear inheritance; wear ${mainpack};
 }
 #alias power {
-  rem inheritance;  put inheritance $invpack;
-  get gods $invpack;  wear gods;
+  rem inheritance; rem $mainpack; put inheritance $mainpack;
+  get gods $mainpack;  wear gods; wear $mainpack;
+}
+
+#alias checktime {
+  rem $mainpack;get watch $mainpack;time;put watch $mainpack;wear $mainpack;
 }
 
 #alias {bank} {
   rem ${mainpack}; get bank ${mainpack};
   dep $cash[$name]; bal;
   put bank ${mainpack}; wear ${mainpack}
+}
+
+#alias min {
+  rem ${mainpack}; get specops ${mainpack};
+  #foreach {dorsalventral;belt;spada;leggings;might} {_item} {rem $_item;put $_item ${mainpack}};
+  wield tool;wear $mainpack;
+}
+
+#alias max {
+  rem $mainpack; rem specops;put specops $mainpack;
+  #foreach {dorsalventral;lightweight;spada;leggings;might} {_item} {get $_item $mainpack;wear $_item}
+  wear $mainpack;
 }
 
 #nop -- ---------------------------------------------------------------
@@ -141,14 +158,14 @@
 #var {eqREXP[encircling body]}      {a mysterious tiki enchantment}
 #var {eqREXP[affixed to armor]}     {colossal blackened horns}
 #var {eqREXP[worn on body]}         {plasteel body armor}
-#var {eqREXP[worn on back]}         {an incorporeal orb hovering overhead}
+#var {eqREXP[worn on back]}         {worn road sign}
 #var {eqREXP[worn on head]}         {some antlers}
 #var {eqREXP[worn on face]}         {a mechanized muzzle}
 #var {eqREXP[worn on legs]}         {some ceramic leggings}
 #var {eqREXP[worn on feet]}         {flaming footwear}
 #var {eqREXP[worn on hands]}        {Gauntlets of Might}
 #var {eqREXP[worn on arms]}         {powered armgear}
-#var {eqREXP[worn about body]}      {a vaporous shroud}
+#var {eqREXP[worn about body]}      {a bestial hide}
 #var {eqREXP[worn about waist]}     {lightweight champion belt}
 #var {eqREXP[wielded]}              {Spada}
 #var {eqREXP[accessory]}            {flaming 190 Octane}
@@ -172,6 +189,6 @@
 #nop -- Tintin files we only want for this character
 #nop -- ---------------------------------------------------------------
 #read $lib/autoLogin.tin
-#read $lib/classes/samurai.tin
+#read $lib/classes/mutant.tin
 #read $lib/score.tin
 
