@@ -103,7 +103,6 @@ event_register {blankline} {endMobCapture} {endMobCapture}
 
   #switch {1d4} {
     #case 1 kick %1;
-    #case 2 #if {$curLevel[$name] > 15} {roundhouse %1} {kill %1};
     #default kill %1}
 
 }
