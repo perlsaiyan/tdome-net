@@ -65,6 +65,22 @@
 #TAB expEarned
 #alias {expEarned} {#math tempXP {$exp[$name] - $startXP}; #showme $name earned $tempXP}
 
+#alias {loadTins} {
+
+    #if {"%1" == "The Tek Angeles Stock Exchange|e56b1074"} {
+        #echo {<cbc>Autoloaded stock routines.};
+        #read $lib/autoStock.tin;
+    };
+}
+
+#alias {killClasses} {
+
+    #if {"%1" == "The Tek Angeles Stock Exchange|e56b1074"} {
+        #echo {<cbc>Unloaded stock routines.};
+        #class {autostock} {kill};
+    };
+}
+
 #message variable off
 #message tick off
 
@@ -170,6 +186,8 @@
 #nop -- Rooms that are outdoors
 #nop -- This needs to be higher priority than indoors
 #action {~\e[36m%1 [%2] [%3} {
+
+  event_raise {roomExit};
   #var lookingAtRoom 1;
   #var curRoom %1;
   #var curRoomKey @roomTitleClean{%1 [%3};
@@ -186,6 +204,8 @@
 } {2}
 #nop -- Rooms that are indoors
 #action {~\e[36m%1 [%2} {
+
+  event_raise {roomExit};
   #var lookingAtRoom 1;
   #var curRoom %1;
   #var curRoomKey @roomTitleClean{%1 [%2};
@@ -218,6 +238,8 @@
    #showme <faa>☠ \e[33m\
 };
 
+#alias shortvar { #var {%1} {%2};#delay {sv-%1} {#unvar {%1}} {.25} }
+
 #nop ------------------------------------------------------------------------
 #nop Functions
 #nop ------------------------------------------------------------------------
@@ -249,7 +271,7 @@
 #read $lib/math.tin
 #read $lib/powerline.tin
 #read $lib/terminal.tin
-
+#read $lib/teleportation.tin
 
 #if { "$class" != "mutant" } {
    #read $lib/practice.tin;
@@ -280,6 +302,10 @@ log on
 #action {< %1H %2M %3V >} { event_raise {prompt} {%1} {%2} {%3} }
 event_register {prompt} {ENDROOMLOOK} {roomLookEnd}
 
+event_register {roomEntry} {loadtins} {loadTins {$curRoomTTH}}
+event_register {roomExit} {unloadtins} {killClasses {$curRoomTTH}}
+
+
 #alias roomLookEnd {
   #if { $lookingAtRoom } {
     #var lookingAtRoom 0;
@@ -298,3 +324,5 @@ event_register {prompt} {ENDROOMLOOK} {roomLookEnd}
 #alias {syslog} {#showme <CCA>SYSLOG: %0}
 #alias {tr %1} {#alias yy {operate advance track %1}} @ {5}
 #alias {tr} {#unalias yy {#echo {<fac>You need to set a target with tr <target>.}};#echo {<fac>Use tr <target> to set a target.}}
+#alias {oo} {o followers %0}
+

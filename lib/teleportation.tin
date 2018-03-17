@@ -1,0 +1,32 @@
+#nop Teleportation protection
+
+#class {tpProtect} {kill}
+#class {tpProtect} {open}
+
+#action {%1 utters the words, 'hastalavista babi'!$} { shortvar {tpProtect} {$curRoomTTH} }
+
+
+#alias tpProtectCheck {
+
+    #if { &{tpProtect} } {
+
+        #if { "$tpProtect" != "%1" } {
+            syslog TELEPORTATION PROTECTION ACTIVATED;
+            AUTOSTOP;
+            recall hq
+        } {
+            syslog Teleportation check validated;
+        };
+
+    }
+}
+
+
+event_register {roomEntry} {tpProtect} {tpProtectCheck {$curRoomTTH}}
+
+
+
+
+#class {tpProtect} {close}
+
+#nop -- vim: syntax=tt
