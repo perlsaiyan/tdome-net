@@ -6,7 +6,6 @@
 #nop -- ---------------------------------------------------------------
 #nop -- Configuration variables
 #nop -- ---------------------------------------------------------------
-auto devour off
 auto loot on
 auto split off
 
