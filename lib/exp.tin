@@ -45,7 +45,7 @@ global {exp[$name]} {0};
       #math {gains[$mob][exp]} {$gains[$mob][exp] + $lastExpEarned};
       #math {gains[$mob][cnt]} {$gains[$mob][cnt] + 1};
 
-      #math {_gold} {(500000 + ($curRM[$name] * 5000)) * 1.2 - $remortCredits};
+      #math {_gold} {(500000 + ($curRM[$name] * 5000)) * 1.05 - $remortCredits};
 
       #if {$curLevel[$name] < 30} {
         #showme <bdf>Killed <eea>%1<bdf>, <eea>@hNum{$lastExpEarned}<bdf> XP (<eea>@hNum{$expPerSec}<bdf> XP/sec, <eea>@hNum{$exp[$name]}<bdf> to level, <eea>$minsToLevel[$name]<bdf> minutes).;
