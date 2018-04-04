@@ -1,8 +1,11 @@
-#nop -- Communications
+#NOP -- Communications
 #nop -- vim: syntax=tt
 
 #class {comms} {kill}
 #class {comms} {open}
+
+#var commLogFile {/tmp/ram/tdome-comms}
+#var commLogState 1;
 
 #var commsLine[1] {};
 #var commColors[gossip] {<bfb>};
@@ -22,17 +25,20 @@
 
 #var SOMEONE {Someone};
 
-#action {%1 gossips, '%2} {
+#action {%1 gossip{s|}, '%3} {
   #if {&{$commsIgnore[%1]}} {#nop } {
-    globalCommsListAdd {gossip} {%1} {%2};
+    globalCommsListAdd {gossip} {%1} {%3};
+    #if { $commLogState } {#line {log} {$commLogFile} }
   }
 };
 
 #action {%1 telepaths to you '%2} {
   globalCommsListAdd {tele} {[$playerInitial[$name]] %1} {%2};
+    #if { $commLogState } {#line {log} {$commLogFile} }
 };
 #action {%1 replies '%2} {
   globalCommsListAdd {tele} {[$playerInitial[$name]]%1} {%2};
+    #if { $commLogState } {#line {log} {$commLogFile} }
 };
 
 #action {^%1 gang-say{s|}, '%3} {
@@ -40,6 +46,7 @@
   #if {"$speaker" == "You"} {#var speaker @prettyName{}};
   #if {&{$commsIgnore[%1]}} {#nop } {
     globalCommsListAdd {gang} {$speaker} {%3};
+    #if { $commLogState } {#line {log} {$commLogFile} }
   }
 }
 
@@ -48,6 +55,7 @@
   #if {"$speaker" == "You"} {#var speaker @prettyName{}};
   #if {&{$commsIgnore[%1]}} {#nop } {
     globalCommsListAdd {bj} {$speaker} {%3};
+    #if { $commLogState } {#line {log} {$commLogFile} }
   }
 }
 
@@ -75,11 +83,15 @@
   };
 }
 
-#tick {commsUpdate} {commsUpdate} {1};
+#nop -- ---------------------------------------------------------------
+#nop -- Tickers
+#nop -- ---------------------------------------------------------------
+#tick {commsUpdate} {#if { $commLogState } {#nop Log to file} {commsUpdate}} {1};
+
 #alias globalListAdd {
   #all #list %1 add {%2};
 }
 
 #event {SCREEN RESIZE} { #var screenwidth %0; #var screenheight %1;}
 
-#class {comms} {close}
+#CLASs {comms} {close}
