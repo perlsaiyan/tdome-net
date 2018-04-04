@@ -1,6 +1,44 @@
 #nop -- VSOF - score screen functions
 
 #nop -- ---------------------------------------------------------------
+#nop -- Config
+#nop -- ---------------------------------------------------------------
+
+#var scoreEldMsg {[0;32mYou are enveloped in an [0;35mebon miasma of eldritch spirits.[0;0m}
+
+#nop -- ---------------------------------------------------------------
+#nop -- Aliases
+#nop -- ---------------------------------------------------------------
+
+#alias {scoreCheckBuffs} {
+    #nop %0;
+    #buffer {get} {_score} {1} {15};
+
+    #if { @isNotInList{{_score}{You have a big turtle shell.}} } {
+        #if { @isAutoGrow{shell} } { grow shell};
+    };
+
+    #if { @isNotInList{{_score}{You have long stretchy limbs.}} } {
+        #if { $curLevel[$name] == 30 && @isAutoGrow{body} } { grow body};
+    };
+
+    #if { @isNotInList{{_score}{$scoreEldMsg}} } {
+        eld
+    };
+
+    #if { @isNotInList{{_score}{You have long, sharp claws..}} } {
+        #if { @isAutoGrow{claws} } { grow claws };
+    };
+
+    #if { @isNotInList{{_score}{You have really long fingers.}} } {
+        #if { @isAutoGrow{fingers} } { grow fingers };
+    };
+
+    event_remove_specific {blankline} {score};
+}
+
+
+#nop -- ---------------------------------------------------------------
 #nop -- Actions
 #nop -- ---------------------------------------------------------------
 
@@ -23,6 +61,8 @@
   #line gag;
 } {5}
 
+#action {^You are an Afro citizen of Tek Angeles.$} { event_register {blankline} {score} {scoreCheckBuffs} }
+
 #nop -- ---------------------------------------------------------------
 #nop -- Functions
 #nop -- ---------------------------------------------------------------
@@ -37,6 +77,7 @@
   #format {result} {$result<058>%+${_keylen}s<078> ]} {%2}
 }
 
-
+#func isInList { #list {%1} {find} {%2} {result}; }
+#func isNotInList { #if { @isInList{{%1}{%2}} } { #var result 0 } { #var result 1 } }
 
 #nop -- vim: syntax=tt
