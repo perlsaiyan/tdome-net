@@ -11,6 +11,21 @@
 #var lootCredits 0;
 #list {_autoArgs} {create} {loot} {scavenge} {devour} {pilfer} {credits} {split};
 
+#var lootGarbage[a hunk of meat] {meat}
+#var lootGarbage[an animal skin] {skin}
+#var lootGarbage[a small chicken pot pie] {pie}
+#var lootGarbage[a bottle of Full Sail] {sail}
+#var lootGarbage[a bottle] {bottle}
+#var lootGarbage[a letter] {letter}
+#var lootGarbage[an unsent letter] {letter}
+#var lootGarbage[a bag of cheesy poofs] {poofs}
+#var lootGarbage[a wooden splint] {splint}
+#var lootGarbage[a rapid-fire cannon] {cannon}
+#var lootGarbage[a chunk of wood] {chunk}
+#var lootGarbage[a cigarette] {cigarette}
+#var lootGarbage[a bottle of Twig Homebrew] {homebrew}
+#var lootGarbage[a short crossbow bolt] {bolt}
+
 #nop -- ---------------------------------------------------------------
 #nop -- Aliases
 #nop -- ---------------------------------------------------------------
@@ -59,7 +74,7 @@
 }
 
 #alias devourCorpse { #nop %0; #if { @isAuto{devour} } { #if {"%1" == "fleshy" } { devour corpse } } {#nop} }
-
+#alias lootingGarbageCheck { #if { &lootGarbage[%1] } { jDrop $lootGarbage[%1]  }; }
 #alias jDrop { #delay {drop-%1} {drop all.%1} {1} }
 
 
@@ -106,6 +121,12 @@
 #action {^A translucent ghostly shroud lies here in a pool of pale light.} {get shroud} {2}
 
 #nop -- Shit we want to drop goes here
+
+
+event_register {looting} {looting} {lootingGarbageCheck %1}
+#action {^You get %1 from the {corpse|remains} of} {event_raise looting %1} {6}
+
+
 #action {^You get a hunk of meat} {drop meat}
 #action {^You get an animal skin} {jDrop skin}
 #action {^You get a small chocolate chicken pot pie} {drop pie}
