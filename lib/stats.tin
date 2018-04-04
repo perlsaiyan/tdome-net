@@ -4,7 +4,7 @@
 #class {statusBar} {kill}
 #class {statusBar} {open}
 #var statRowsBottom {4}
-#var statRowsTop    {4}
+#var statRowsTop    {0}
 #split {$statRowsTop} {$statRowsBottom}
 
 #nop -- ---------------------------------------------------------------------
