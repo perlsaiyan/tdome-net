@@ -272,6 +272,7 @@
 #read $lib/powerline.tin
 #read $lib/terminal.tin
 #read $lib/teleportation.tin
+#read $lib/tmux.tin
 
 #if { "$class" != "mutant" } {
    #read $lib/practice.tin;

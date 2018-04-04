@@ -1,0 +1,65 @@
+#nop -- VSOF - tmux utilities
+
+#var statusFIFO {/tmp/ram/tdome-status};
+
+#nop -- ---------------------------------------------------------------
+#nop -- Aliases
+#nop -- ---------------------------------------------------------------
+
+#alias {status} {
+
+    #script {result} {pidof -s -x watch-status};
+    #if { $result[1] } {
+
+        #nop -- We're already running, kill the window;
+        #system {kill $result[1]};
+    } {
+
+        #nop -- Spawn a status window;
+        #system {tmux split-window -h -l 25 "$ttd/utils/watch-status" && tmux select-pane -L};
+        #split 0 4; #buffer end;
+    }
+}
+
+#alias {statusLogCash} {
+    #nop -- %0;
+    #line log {$statusFIFO} { };
+    #line log {$statusFIFO} { };
+    #math {remortGold} { (500000 + ($curRM[$name] * 5000)) * 1.05 };
+    #math {totalCredits} {$remortCredits + $cash[$name] };
+    #format {displayCredits} {%G} {$totalCredits};
+    #line log {$statusFIFO} {Credits: $displayCredits};
+
+    #script {_cashprogress} {$ttd/utils/progress-bar $totalCredits $remortGold};
+    #line log {$statusFIFO} {$_cashprogress[1]}
+}
+
+#alias {statusLogXP } {
+    #nop -- %0;
+    #line log {$statusFIFO} { };
+    #line log {$statusFIFO} { };
+    #script {_xpprogress} {$ttd/utils/progress-bar @XP{} @xpToRemort{}};
+    #format {displayXP} {%G} {@XP{}};
+    #line log {$statusFIFO} {XP: $displayXP};
+    #line log {$statusFIFO} {$_xpprogress[1]};
+    #line log {$statusFIFO} { };
+    #line log {$statusFIFO} { };
+    #line log {$statusFIFO} { };
+    #line log {$statusFIFO} { };
+}
+
+#nop -- ---------------------------------------------------------------
+#nop -- Tickers and Events
+#nop -- ---------------------------------------------------------------
+
+#tick {statusWindow} {event_raise statusWindowUpdate} {1}
+
+event_register {statusWindowUpdate} {_clear} {
+    #nop -- %0;
+    #system {clear >> $statusFIFO};
+};
+
+event_register {statusWindowUpdate} {cash} { statusLogCash };
+event_register {statusWindowUpdate} {xp} { statusLogXP };
+
+#nop -- vim: syntax=tt
