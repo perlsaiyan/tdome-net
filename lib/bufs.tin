@@ -4,6 +4,9 @@
 #class {bufs} {kill}
 #class {bufs} {open}
 
+
+#list {_autogrow} {create} {shell} {body} {claws} {arms} {fingers};
+
 #nop -- ---------------------------------------------------------------------
 #nop -- Commands/Aliases intended for human use
 #nop -- ---------------------------------------------------------------------
@@ -18,6 +21,24 @@
       };
   };
 
+}
+
+#alias ag {
+
+    #list {_autogrow} {find} {%1} {result};
+    #if { $result > 0 } {
+
+        #if { "%2" == "on" } { #var _ag[%1] on; };
+        #elseif { "%2" == "off" } { #var _ag[%1] off; };
+        #else { #echo {<fca>Auto '%1' is '$_ag[%1]'}; };
+
+    } {
+      #if { "%1" == "" } {
+        #foreach {$_autogrow[%*]} {_config} {#echo {<fca>Grow $_config is $_ag[$_config]}}
+      } {
+        #echo {<fca>Invalid loot option '%1'};
+      }
+    }
 }
 
 #nop -- ---------------------------------------------------------------------
@@ -36,6 +57,7 @@
   #echo {<cce>--==+ BUFEND: %1 (lev $bufSLevel[$name][%1]), lasted @delta{$bufStart[$name][%1]} +==--};
   global {bufs[$name][%1]} {0}; 
   global {bufStart[$name][%1]} {0};
+  #if { @isAutoGrow{%1} } { grow %1 };
 }
 
 
@@ -47,7 +69,6 @@
 #act {^You have some extra arms} {bufOn arms}
 #act {^You feel blessed.} {bufOn bless}
 #act {^You have long, sharp claws} {bufOn claws}
-#act {^A horde of eldritch spirits erupts from the ground, surging towards you to envelope you in an ebon miasma.} {bufOn eldritch}
 #act {^Your fist glows with a holy aura.} {bufOn fist}
 #act {^You start glowing.} {bufOn sanct}
 
@@ -60,6 +81,7 @@
 
 #nop -- Converting to Events
 
+#act {^A horde of eldritch spirits erupts from the {(ground|water)}, surging towards you to envelope you in an ebon miasma.} {event_raise buffOn eldritch}
 #act {^Your limbs creak as they stretch out.$} {event_raise buffOn body}
 #act {^You grow a big scaly shell!$} {event_raise buffOn shell}
 #act {^You grow some sharp, nasty claws!} {event_raise buffOn claws}
@@ -70,6 +92,7 @@
 #act {^Your claws shrink back into your fingers.$} {event_raise buffEnd claws}
 #act {^Your fingers droop back to their stubby selves.$} {event_raise buffEnd fingers}
 #act {^Your extra arms suck back into your body.$} {event_raise buffEnd arms}
+#act {^Your limbs are no longer quite so long.$} {event_raise buffEnd body}
 
 #act {^It's hard to grow anything with this much stuff!} {event_raise buffOn fail}
 
@@ -85,6 +108,7 @@ event_register {buffOn} {bufs} {bufOn %2}
 #nop -- ---------------------------------------------------------------------
 #function isBuf { #format {result} {$bufs[$name][%1]} }
 #function delta { #math {result} {(@getEpoch{} - %1) / $tickValue}}
+#func isAutoGrow { #if {"$_ag[%1]" == "on"} { #var result 1 } { #var result 0 } }
 
 #nop -- ---------------------------------------------------------------------
 #nop -- Character Table
