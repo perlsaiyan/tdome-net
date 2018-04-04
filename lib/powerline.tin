@@ -52,13 +52,18 @@
     #format result {%.${width}s} {$result};
 }
 
+#func {powerlineCash} {
+    #var result {@scoreBlock{{Remort$}{@hNum{$remortCredits}}} @scoreBlock{{Credits}{$cash[$name] / @hNum{$bal[$name]}}{20}}}
+    }
+
 #nop -- ---------------------------------------------------------------
 #nop -- Tickers
 #nop -- ---------------------------------------------------------------
 #tick {statusBar} { #showme {@powerstatus{}} {$statRowsBottom}} {.25}
 #nop -- This is temporary garbage
+#nop -- #tick {emptyBar} {#echo {{ } {3}}} {.1}
 #tick {playerBar} { #showme {@powerlinePlayer{}} {2}} {.25}
-#tick {emptyBar} {#echo {{ } {3}}} {.1}
+#nop -- #tick {cashBar} {#showme {@powerlineCash{}} {3}} {.25}
 
 #nop -= vim: syntax=tt
 
