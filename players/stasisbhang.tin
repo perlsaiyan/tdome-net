@@ -23,6 +23,20 @@
 #nop -- Aliases
 #nop -- ---------------------------------------------------------------
 
+#alias {_setup} {
+    #foreach {boonie;weaponized} {foo} {
+        put $foo molle;
+    };
+
+    #foreach {shrike;pads;vaporous;martens;thumper;molle} {foo} {
+        wear $foo
+    };
+
+    put all case
+    #unalias {_setup}
+}
+
+
 #nop -- ---------------------------------------------------------------
 #nop -- Actions/Triggers
 #nop -- Strongly consider moving this stuff elsewhere
