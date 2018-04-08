@@ -3,7 +3,7 @@
 #class {tpProtect} {kill}
 #class {tpProtect} {open}
 
-#action {%1 utters the words, 'hastalavista babi'!$} { shortvar {tpProtect} {$curRoomTTH} }
+#action {%1 utters the words, 'hastalavista babi'!$} { shortvar {tpProtect} {$curRoomTTF} }
 
 
 #alias tpProtectCheck {
@@ -22,7 +22,7 @@
 }
 
 
-event_register {roomEntry} {tpProtect} {tpProtectCheck {$curRoomTTH}}
+event_register {roomEntry} {tpProtect} {tpProtectCheck {$curRoomTTF}}
 
 
 

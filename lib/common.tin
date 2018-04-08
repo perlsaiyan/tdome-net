@@ -29,7 +29,6 @@
 #var HisHer[female] {Her};
 #var hisher[male] {his};
 #var hisher[female] {her};
-#var logDir {/home/tom/logs}
 
 #nop -- Kill functions (common)
 #alias {kt} {kill tek}
@@ -67,7 +66,7 @@
 
 #alias {loadTins} {
 
-    #if {"%1" == "The Tek Angeles Stock Exchange|e56b1074"} {
+    #if {"%1" == "The Tek Angeles Stock Exchange|826710247"} {
         #echo {<cbc>Autoloaded stock routines.};
         #read $lib/autoStock.tin;
     };
@@ -75,7 +74,7 @@
 
 #alias {killClasses} {
 
-    #if {"%1" == "The Tek Angeles Stock Exchange|e56b1074"} {
+    #if {"%1" == "The Tek Angeles Stock Exchange|826710247"} {
         #echo {<cbc>Unloaded stock routines.};
         #class {autostock} {kill};
     };
@@ -150,38 +149,6 @@
 } {5}
 
 
-#alias {log}
-{
-    #if {"%0" == "on"}
-    {
-        #if {"$logging" != "on"}
-        {
-            #format {logfile} {/home/tom/logs/%t-%s.log} {%Y-%m-%d} {$name};
-            #log append $logfile;
-            #var logging on
-        };
-        #else
-        {
-            #showme You are already logging.
-        }
-    };
-    #elseif {"%0" == "off"}
-    {
-        #if {"$logging" == "on"}
-        {
-            #log off;
-            #var logging off
-        };
-        #else
-        {
-            #showme You are not logging.
-        }
-    };
-    #else
-    {
-        #showme Turn logging on or off?
-    }
-}
 
 #nop -- Rooms that are outdoors
 #nop -- This needs to be higher priority than indoors
@@ -256,6 +223,7 @@
 #read $lib/banking.tin
 #read $lib/exp.tin
 #read $lib/grouping.tin
+#read $lib/logging.tin
 #read $lib/looting.tin
 #read $lib/socials.tin
 #read $lib/comms.tin
@@ -303,8 +271,8 @@ log on
 #action {< %1H %2M %3V >} { event_raise {prompt} {%1} {%2} {%3} }
 event_register {prompt} {ENDROOMLOOK} {roomLookEnd}
 
-event_register {roomEntry} {loadtins} {loadTins {$curRoomTTH}}
-event_register {roomExit} {unloadtins} {killClasses {$curRoomTTH}}
+event_register {roomEntry} {loadtins} {loadTins {$curRoomTTF}}
+event_register {roomExit} {unloadtins} {killClasses {$curRoomTTF}}
 
 
 #alias roomLookEnd {
@@ -316,13 +284,12 @@ event_register {roomExit} {unloadtins} {killClasses {$curRoomTTH}}
 
 #action {~\e[0m$} { event_raise {blankline} }
 #action {^The Remorter telepaths to you, 'There you are, kid.'$} {event_raise remort}
-#action {^You touch the display and select %1.$} {event_raise {transport} {$curRoomTTH} {%1}}
+#action {^You touch the display and select %1.$} {event_raise {transport} {$curRoomTTF} {%1}}
 #action {^You click your heels together three times and disappear!$} { event_raise {recall} }
 #action {^You click your heels together three times and disapear!$} { event_raise {recall} }
 
 #nop -- ---------------------------------------------------------------
 
-#alias {syslog} {#showme <CCA>SYSLOG: %0}
 #alias {tr %1} {#alias yy {operate advance track %1}} @ {5}
 #alias {tr} {#unalias yy {#echo {<fac>You need to set a target with tr <target>.}};#echo {<fac>Use tr <target> to set a target.}}
 #alias {oo} {o followers %0}

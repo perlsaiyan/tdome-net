@@ -46,10 +46,10 @@ event_register {recall} {subRecallCredits} {subRecallCredits}
 #alias subTransportCredits {
     #list {transportCommon} {find} {%3} {_result};
     #if {$_result > 0} {
-        #if {"$curRoomTTH" == "Room of Summoning|aad3b693" } {
+        #if {"$curRoomTTF" == "Room of Summoning|3446333123" } {
             bankRCSub {transportNBK} {500}
         };
-        #elseif {"$curRoomTTH" == "Club Boom|0d0ccee6" } {
+        #elseif {"$curRoomTTF" == "Club Boom|3467387990" } {
             bankRCSub {transportNBK} {500}
         };
         #else {

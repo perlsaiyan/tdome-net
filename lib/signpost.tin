@@ -149,7 +149,6 @@
 #nop -----------------------------------------------------------------------
 #nop Tintin Builtin Hash Routines
 #nop -----------------------------------------------------------------------
-#function {TTH} { #hash {result} {%1} }
 #function {TTF} { #format {result} {%H} {%1} }
 
 #nop -----------------------------------------------------------------------
@@ -172,7 +171,6 @@
   };
   #if {"%1" == "off"} {
     #var curRoomSignKeyBis24 {@roomTitleClean{$curRoom}|@mkhash24{$curRoomKey $roomDesc}};
-    #var curRoomTTH {@roomTitleClean{$curRoom}|@TTH{$curRoomKey $roomDesc}};
     #var curRoomTTF {@roomTitleClean{$curRoom}|@TTF{$curRoomKey $roomDesc}};
     #class {roomTemp} {kill};
     event_raise {roomEntry};
